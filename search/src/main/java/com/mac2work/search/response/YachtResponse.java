@@ -23,6 +23,6 @@ public class YachtResponse {
 	private Integer capacity;
 	private Double motorPower;
 	@Enumerated
-	private List<Accessory> accesories;
+	private List<Accessory> accessories;
 
 }
