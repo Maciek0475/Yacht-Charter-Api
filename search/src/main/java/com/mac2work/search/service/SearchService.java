@@ -1,8 +1,8 @@
 package com.mac2work.search.service;
 
+
 import java.util.List;
 
-import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.stereotype.Service;
 
 import com.mac2work.search.model.Propulsion;
@@ -30,7 +30,7 @@ public class SearchService {
 	}
 
 	public List<YachtResponse> getYachts() {
-		
+
 		return yachtRepository.findAll().stream()
 				.map(yacht -> mapToYachtResponse(yacht)).toList();
 	}
