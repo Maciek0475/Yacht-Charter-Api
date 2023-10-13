@@ -35,6 +35,7 @@ public class Yacht {
 	private Double length;
 	private Integer capacity;
 	private Double motorPower;
+	private Double priceFrom;
 	@ManyToMany
 	@JoinTable(
 		name = "yachts_accessories",
