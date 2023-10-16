@@ -26,7 +26,7 @@ public class PricingService {
 		Double multiplicator = 1.0;
 		if(days >= 14) {
 			days -= days/7 * 7;
-			multiplicator += 7 * PriceMultiplicator.ABOVE_WEEK.getMultiplicator();
+			multiplicator += days/7 * 7 * PriceMultiplicator.ABOVE_WEEK.getMultiplicator();
 		}else if(days >= 7) {
 			days -= 7;
 			multiplicator += 7 * PriceMultiplicator.WEEK.getMultiplicator();
