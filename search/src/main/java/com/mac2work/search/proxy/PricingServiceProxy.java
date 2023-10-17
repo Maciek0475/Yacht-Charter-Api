@@ -6,7 +6,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.mac2work.search.model.PriceResponse;
+import com.mac2work.search.response.PriceResponse;
 
 @FeignClient(name="PRICING-SERVICE")
 public interface PricingServiceProxy {

@@ -1,4 +1,4 @@
-package com.mac2work.search.model;
+package com.mac2work.search.response;
 
 import lombok.Builder;
 import lombok.Data;

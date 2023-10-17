@@ -6,11 +6,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.mac2work.search.model.PriceResponse;
 import com.mac2work.search.model.Propulsion;
 import com.mac2work.search.model.Yacht;
 import com.mac2work.search.proxy.PricingServiceProxy;
 import com.mac2work.search.repository.YachtRepository;
+import com.mac2work.search.response.PriceResponse;
 import com.mac2work.search.response.YachtResponse;
 
 import lombok.RequiredArgsConstructor;

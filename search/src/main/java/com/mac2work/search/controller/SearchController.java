@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mac2work.search.model.PriceResponse;
 import com.mac2work.search.model.Propulsion;
+import com.mac2work.search.response.PriceResponse;
 import com.mac2work.search.response.YachtResponse;
 import com.mac2work.search.service.SearchService;
 
