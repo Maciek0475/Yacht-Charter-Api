@@ -1,5 +1,7 @@
 package com.mac2work.orders.service;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -27,12 +29,65 @@ public class OrdersService {
 				.build();
 		
 		orderRepository.save(order);
-		ResponseEntity<YachtResponse> entity = searchServiceProxy.getYachtById(orderRequest.getYachtId());
+		
+		return mapOrderRequestToOrderResponse(orderRequest);
+	}
+
+	
+
+	public List<OrderResponse> getUserOrders(Long userId) {
+		List<Order> orders = orderRepository.findAllByUserId(userId);	
+		
+		return orders.stream().map(
+				order -> OrderResponse.builder()
+				.yachtModel(
+						getYachtResponse(order.getYachtId()).getModel())
+				.days(order.getDays())
+				.from(order.getFrom())
+				.to(order.getTo())
+				.price(order.getPrice())
+				.build()).toList();
+	}
+
+	public OrderResponse getUserOrderById(Long userId) {
+		Order order = orderRepository.getByUserId(userId);
+		
+		return mapOrderToOrderResponse(order);
+	}
+
+	public List<OrderResponse> getUserArchivalOrders(Long userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public OrderResponse getUserArchivalOrderById(Long userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	private YachtResponse getYachtResponse(Long yachtId) {
+		ResponseEntity<YachtResponse> entity = searchServiceProxy.getYachtById(yachtId);
 		YachtResponse yacht = entity.getBody();
+		return yacht;
+	}
+	
+	private OrderResponse mapOrderRequestToOrderResponse(OrderRequest orderRequest) {
 		return OrderResponse.builder()
-				.yachtModel(yacht.getModel())
+				.yachtModel(getYachtResponse(orderRequest.getYachtId()).getModel())
 				.days(orderRequest.getDays())
+				.from(orderRequest.getFrom())
+				.to(orderRequest.getTo())
 				.price(orderRequest.getPrice())
+				.build();
+	}
+	
+	private OrderResponse mapOrderToOrderResponse(Order order) {
+		return OrderResponse.builder()
+				.yachtModel(getYachtResponse(order.getYachtId()).getModel())
+				.days(order.getDays())
+				.from(order.getFrom())
+				.to(order.getTo())
+				.price(order.getPrice())
 				.build();
 	}
 

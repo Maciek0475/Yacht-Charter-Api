@@ -1,5 +1,7 @@
 package com.mac2work.orders.model;
 
+import java.time.LocalDate;
+
 import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.Entity;
@@ -25,6 +27,8 @@ public class Order {
 	private Long userId;
 	private Long yachtId;
 	private Integer days;
+	private LocalDate from;
+	private LocalDate to;
 	private Double price;
 
 }
