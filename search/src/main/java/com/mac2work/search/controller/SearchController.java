@@ -1,5 +1,6 @@
 package com.mac2work.search.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mac2work.search.model.Propulsion;
+import com.mac2work.search.response.PriceResponse;
 import com.mac2work.search.response.YachtResponse;
 import com.mac2work.search.service.SearchService;
 
@@ -42,6 +44,11 @@ public class SearchController {
 	public ResponseEntity<YachtResponse> getYachtById(@PathVariable Long id){
 		YachtResponse yacht = searchService.getYachtById(id);
 		return new ResponseEntity<>(yacht, HttpStatus.OK);
+	}
+	@GetMapping("/{id}/price/{from}/{to}")
+	public ResponseEntity<PriceResponse> getYachtById(@PathVariable Long id, @PathVariable LocalDate from, @PathVariable LocalDate to){
+		PriceResponse priceResponse = searchService.getPrice(id, from, to);
+		return new ResponseEntity<>(priceResponse, HttpStatus.OK);
 	}
 }
   

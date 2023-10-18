@@ -1,13 +1,16 @@
 package com.mac2work.search.service;
 
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.mac2work.search.model.Propulsion;
 import com.mac2work.search.model.Yacht;
+import com.mac2work.search.proxy.PricingServiceProxy;
 import com.mac2work.search.repository.YachtRepository;
+import com.mac2work.search.response.PriceResponse;
 import com.mac2work.search.response.YachtResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -17,6 +20,8 @@ import lombok.RequiredArgsConstructor;
 public class SearchService {
 
 	private final YachtRepository yachtRepository;
+	private final PricingServiceProxy pricingServiceProxy;
+
 	
 	private YachtResponse mapToYachtResponse(Yacht yacht) {
 		return YachtResponse.builder()
@@ -27,6 +32,9 @@ public class SearchService {
 		.motorPower(yacht.getMotorPower())
 		.accessories(yacht.getAccessories())
 			.build();
+	}
+	private Yacht getRawYachtById(Long id) {
+		return yachtRepository.findById(id).orElseThrow();
 	}
 
 	public List<YachtResponse> getYachts() {
@@ -44,6 +52,16 @@ public class SearchService {
 	public YachtResponse getYachtById(Long id) {
 		Yacht yacht = yachtRepository.findById(id).orElseThrow();
 		return mapToYachtResponse(yacht);
+	}
+	
+	public PriceResponse getPrice(Long id, LocalDate from, LocalDate to) {
+		Yacht yacht = getRawYachtById(id);
+		PriceResponse priceResponse = pricingServiceProxy.getCalculatedPrice(yacht.getPriceFrom(), from, to);
+		return PriceResponse.builder()
+				.yachtModel(yacht.getModel())
+				.days(priceResponse.getDays())
+				.price(priceResponse.getPrice())
+				.build();
 	}
 
 
