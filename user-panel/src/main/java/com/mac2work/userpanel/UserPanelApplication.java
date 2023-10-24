@@ -2,9 +2,11 @@ package com.mac2work.userpanel;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
-public class UserPanelApplication {
+@EnableDiscoveryClient
+class UserPanelApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(UserPanelApplication.class, args);

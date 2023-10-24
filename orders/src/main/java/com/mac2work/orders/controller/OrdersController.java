@@ -51,7 +51,7 @@ public class OrdersController {
 	public ResponseEntity<OrderResponse> getUserArchivalOrderById(@PathVariable Long id){
 		//for test
 		Long userId = (long) 1;
-		OrderResponse order = ordersService.getUserArchivalOrderById(userId);
+		OrderResponse order = ordersService.getUserArchivalOrderById(id, userId);
 		return new ResponseEntity<>(order, HttpStatus.OK);
 	}
 	

@@ -1,5 +1,6 @@
 package com.mac2work.orders.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -38,31 +39,26 @@ public class OrdersService {
 	public List<OrderResponse> getUserOrders(Long userId) {
 		List<Order> orders = orderRepository.findAllByUserId(userId);	
 		
-		return orders.stream().map(
-				order -> OrderResponse.builder()
-				.yachtModel(
-						getYachtResponse(order.getYachtId()).getModel())
-				.days(order.getDays())
-				.from(order.getFrom())
-				.to(order.getTo())
-				.price(order.getPrice())
-				.build()).toList();
+		return mapOrdersToOrderResponses(orders);
 	}
 
+
+
+	
+
 	public OrderResponse getUserOrderById(Long userId) {
-		Order order = orderRepository.getByUserId(userId);
-		
+		Order order = orderRepository.findByUserId(userId);
 		return mapOrderToOrderResponse(order);
 	}
 
 	public List<OrderResponse> getUserArchivalOrders(Long userId) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Order> orders = orderRepository.findAllArchivalByUserId(userId, LocalDate.now());
+		return mapOrdersToOrderResponses(orders);
 	}
 
-	public OrderResponse getUserArchivalOrderById(Long userId) {
-		// TODO Auto-generated method stub
-		return null;
+	public OrderResponse getUserArchivalOrderById(Long id, Long userId) {
+		Order order = orderRepository.findArchivalByUserId(id, userId, LocalDate.now());
+		return mapOrderToOrderResponse(order);
 	}
 	
 	private YachtResponse getYachtResponse(Long yachtId) {
@@ -89,6 +85,17 @@ public class OrdersService {
 				.to(order.getTo())
 				.price(order.getPrice())
 				.build();
+	}
+	private List<OrderResponse> mapOrdersToOrderResponses(List<Order> orders) {
+		return orders.stream().map(
+				order -> OrderResponse.builder()
+				.yachtModel(
+						getYachtResponse(order.getYachtId()).getModel())
+				.days(order.getDays())
+				.from(order.getFrom())
+				.to(order.getTo())
+				.price(order.getPrice())
+				.build()).toList();
 	}
 
 }
