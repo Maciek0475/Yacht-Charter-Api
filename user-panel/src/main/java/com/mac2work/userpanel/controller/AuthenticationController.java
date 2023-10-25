@@ -24,12 +24,12 @@ public class AuthenticationController {
 	
 	@PostMapping("/register")
 	public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest registerRequest){
-		return new ResponseEntity<>(authenticationService.register(), HttpStatus.CREATED);
+		return new ResponseEntity<>(authenticationService.register(registerRequest), HttpStatus.CREATED);
 	}
 	
 	@PostMapping("/authenticate")
 	public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest authenticationRequest){
-		return new ResponseEntity<>(authenticationService.authenticate(), HttpStatus.OK);
+		return new ResponseEntity<>(authenticationService.authenticate(authenticationRequest), HttpStatus.OK);
 	}
 
 }
