@@ -4,11 +4,14 @@ import java.security.Key;
 import java.util.Date;
 import java.util.function.Function;
 
+import org.springframework.stereotype.Component;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
+@Component
 public class JwtUtil {
 
 	private static final String SECRET_KEY = "70489BD183A6BE5C2F1090C85B4C05B1601F27E1F2D5AA14B92B2156BE585C20";
