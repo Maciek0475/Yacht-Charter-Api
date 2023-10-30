@@ -10,8 +10,9 @@ import org.springframework.stereotype.Component;
 public class RouteValidator {
 	
 	public static final List<String> unsecApiEndpoints = List.of(
-			"/auth/register",
-			"/auth/authenticate",
+			"/user/auth/authentication",
+			"/user/auth/register",
+			"/user/auth/username",
 			"/eureka"
 			);
 	

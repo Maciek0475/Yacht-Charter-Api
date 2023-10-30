@@ -2,6 +2,7 @@ package com.mac2work.userpanel.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/auth")
+@RequestMapping("/user/auth")
 public class AuthenticationController {
 	
 	private final AuthenticationService authenticationService;
@@ -30,6 +31,11 @@ public class AuthenticationController {
 	@PostMapping("/authenticate")
 	public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest authenticationRequest){
 		return new ResponseEntity<>(authenticationService.authenticate(authenticationRequest), HttpStatus.OK);
+	}
+	
+	@GetMapping("/username")
+	public String getLoggedInUserUsername() {
+		return authenticationService.getLoggedInUserUsername();
 	}
 
 }

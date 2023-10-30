@@ -12,10 +12,11 @@ import com.mac2work.apigateway.util.JwtUtil;
 public class JwtAuthenticationFilter extends AbstractGatewayFilterFactory<JwtAuthenticationFilter.Config>{
 	
 	@Autowired
-	private  JwtUtil jwtUtil;
+	private JwtUtil jwtUtil;
 	
 	@Autowired
 	private RouteValidator routeValidator;
+
 	
 	public JwtAuthenticationFilter() {
         super(Config.class);
@@ -34,10 +35,12 @@ public class JwtAuthenticationFilter extends AbstractGatewayFilterFactory<JwtAut
 	                if (authHeader != null && authHeader.startsWith("Bearer ")) {
 	                    authHeader = authHeader.substring(7);
 	                }
-	                //TODO: send logged in user username by feign
-	                    if(!jwtUtil.isTokenValid(authHeader, ""))
-	                    throw new RuntimeException("unauthorized access to application");
-	                   
+	                try {
+	                    jwtUtil.validateToken(authHeader);
+
+	                } catch (Exception e) {
+	                    throw new RuntimeException("un authorized access to application");
+	                }
 	            }
 	            return chain.filter(exchange);
 	        
