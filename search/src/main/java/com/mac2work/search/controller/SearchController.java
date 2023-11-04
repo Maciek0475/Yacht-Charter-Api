@@ -5,12 +5,18 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mac2work.search.model.Propulsion;
+import com.mac2work.search.request.YachtRequest;
+import com.mac2work.search.response.ApiResponse;
 import com.mac2work.search.response.PriceResponse;
 import com.mac2work.search.response.YachtResponse;
 import com.mac2work.search.service.SearchService;
@@ -50,5 +56,21 @@ public class SearchController {
 		PriceResponse priceResponse = searchService.getPrice(id, from, to);
 		return new ResponseEntity<>(priceResponse, HttpStatus.OK);
 	}
+	@PostMapping
+	public ResponseEntity<YachtResponse> addYacht(@RequestBody YachtRequest yachtRequest){
+		YachtResponse yachtResponse = searchService.addYacht(yachtRequest);
+		return new ResponseEntity<>(yachtResponse, HttpStatus.CREATED);
+	}
+	@PutMapping("/{id}")
+	public ResponseEntity<YachtResponse> updateYacht(@RequestBody YachtRequest yachtRequest, @PathVariable Long id){
+		YachtResponse yachtResponse = searchService.updateYacht(yachtRequest, id);
+		return new ResponseEntity<>(yachtResponse, HttpStatus.OK);
+	}
+	@DeleteMapping("/{id}")
+	public ResponseEntity<ApiResponse> deleteYacht(@PathVariable Long id){
+		ApiResponse apiResponse = searchService.deleteYacht(id);
+		return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
+	}
+	
 }
   

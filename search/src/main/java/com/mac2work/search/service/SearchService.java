@@ -4,12 +4,15 @@ package com.mac2work.search.service;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.mac2work.search.model.Propulsion;
 import com.mac2work.search.model.Yacht;
 import com.mac2work.search.proxy.PricingServiceProxy;
 import com.mac2work.search.repository.YachtRepository;
+import com.mac2work.search.request.YachtRequest;
+import com.mac2work.search.response.ApiResponse;
 import com.mac2work.search.response.PriceResponse;
 import com.mac2work.search.response.YachtResponse;
 
@@ -35,6 +38,18 @@ public class SearchService {
 	}
 	private Yacht getRawYachtById(Long id) {
 		return yachtRepository.findById(id).orElseThrow();
+	}
+	
+	private Yacht mapYachtRequestToYacht(YachtRequest yachtRequest) {
+		return Yacht.builder()
+				.model(yachtRequest.getModel())
+				.propulsion(yachtRequest.getPropulsion())
+				.length(yachtRequest.getLength())
+				.capacity(yachtRequest.getCapacity())
+				.motorPower(yachtRequest.getMotorPower())
+				.priceFrom(yachtRequest.getPriceFrom())
+				.accessories(yachtRequest.getAccessories())
+				.build();
 	}
 
 	public List<YachtResponse> getYachts() {
@@ -63,6 +78,36 @@ public class SearchService {
 				.price(priceResponse.getPrice())
 				.build();
 	}
+	public YachtResponse addYacht(YachtRequest yachtRequest) {
+		Yacht yacht = mapYachtRequestToYacht(yachtRequest);
+		yachtRepository.save(yacht);
+		
+		return mapToYachtResponse(yacht);
+	}
+	public YachtResponse updateYacht(YachtRequest yachtRequest, Long id) {
+		Yacht yacht = yachtRepository.findById(id).orElseThrow();
+		yacht.setModel(yachtRequest.getModel());
+		yacht.setPropulsion(yachtRequest.getPropulsion());
+		yacht.setLength(yachtRequest.getLength());
+		yacht.setCapacity(yachtRequest.getCapacity());
+		yacht.setMotorPower(yachtRequest.getMotorPower());
+		yacht.setPriceFrom(yachtRequest.getPriceFrom());
+		yacht.setAccessories(yachtRequest.getAccessories());
+		yachtRepository.save(yacht);
+		
+		Yacht updatedYacht = yachtRepository.findById(id).orElseThrow();
+		return mapToYachtResponse(updatedYacht);		
+	}
+	public ApiResponse deleteYacht(Long id) {
+		Yacht yacht = yachtRepository.findById(id).orElseThrow();
+		yachtRepository.delete(yacht);
+		return ApiResponse.builder()
+				.isSuccess(Boolean.TRUE)
+				.message("Yacht deleted successfully")
+				.httpStatus(HttpStatus.NO_CONTENT)
+				.build();
+	}
+	
 
 
 }
