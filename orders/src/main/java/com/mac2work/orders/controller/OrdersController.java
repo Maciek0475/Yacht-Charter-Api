@@ -4,14 +4,17 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mac2work.orders.request.OrderRequest;
+import com.mac2work.orders.response.ApiResponse;
 import com.mac2work.orders.response.OrderResponse;
 import com.mac2work.orders.service.OrdersService;
 
@@ -25,7 +28,7 @@ public class OrdersController {
 	
 	@GetMapping
 	public ResponseEntity<List<OrderResponse>> getUserOrders(){
-		//for test
+		//get current user userId by feign or something
 		Long userId = (long) 1;
 		List<OrderResponse> orders = ordersService.getUserOrders(userId);
 		return new ResponseEntity<>(orders, HttpStatus.OK);
@@ -59,6 +62,18 @@ public class OrdersController {
 	public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest orderRequest){
 		OrderResponse orderResponse = ordersService.createOrder(orderRequest);
 		return new ResponseEntity<>(orderResponse, HttpStatus.CREATED);
+	}
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<OrderResponse> updateOrder(@RequestBody OrderRequest orderRequest, @PathVariable Long id){
+		OrderResponse orderResponse = ordersService.updateOrder(orderRequest, id);
+		return new ResponseEntity<>(orderResponse, HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<ApiResponse> deleteOrder(@PathVariable Long id){
+		ApiResponse apiResponse = ordersService.deleteOrder(id);
+		return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
 	}
 	
 
