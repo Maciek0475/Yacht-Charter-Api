@@ -33,9 +33,9 @@ public class AuthenticationController {
 		return new ResponseEntity<>(authenticationService.authenticate(authenticationRequest), HttpStatus.OK);
 	}
 	
-	@GetMapping("/username")
-	public String getLoggedInUserUsername() {
-		return authenticationService.getLoggedInUserUsername();
+	@GetMapping("/id")
+	public Long getLoggedInUserId() {
+		return authenticationService.getLoggedInUserId();
 	}
 
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.mac2work.orders.model.Order;
 import com.mac2work.orders.proxy.SearchServiceProxy;
+import com.mac2work.orders.proxy.UserPanelProxy;
 import com.mac2work.orders.repository.OrderRepository;
 import com.mac2work.orders.request.OrderRequest;
 import com.mac2work.orders.response.ApiResponse;
@@ -22,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class OrdersService {
 	private final OrderRepository orderRepository;
 	private final SearchServiceProxy searchServiceProxy;
+	private final UserPanelProxy userPanelProxy;
 	
 	private YachtResponse getYachtResponse(Long yachtId) {
 		ResponseEntity<YachtResponse> entity = searchServiceProxy.getYachtById(yachtId);
@@ -76,23 +78,26 @@ public class OrdersService {
 
 	
 
-	public List<OrderResponse> getUserOrders(Long userId) {
+	public List<OrderResponse> getUserOrders() {
+		Long userId = userPanelProxy.getLoggedInUserId();
 		List<Order> orders = orderRepository.findAllByUserId(userId);	
-		
 		return mapOrdersToOrderResponses(orders);
 	}
 
-	public OrderResponse getUserOrderById(Long userId) {
-		Order order = orderRepository.findByUserId(userId);
+	public OrderResponse getUserOrderById(Long id) {
+		Long userId = userPanelProxy.getLoggedInUserId();
+		Order order = orderRepository.findByUserId(id, userId);
 		return mapOrderToOrderResponse(order);
 	}
 
-	public List<OrderResponse> getUserArchivalOrders(Long userId) {
+	public List<OrderResponse> getUserArchivalOrders() {
+		Long userId = userPanelProxy.getLoggedInUserId();
 		List<Order> orders = orderRepository.findAllArchivalByUserId(userId, LocalDate.now());
 		return mapOrdersToOrderResponses(orders);
 	}
 
-	public OrderResponse getUserArchivalOrderById(Long id, Long userId) {
+	public OrderResponse getUserArchivalOrderById(Long id) {
+		Long userId = userPanelProxy.getLoggedInUserId();
 		Order order = orderRepository.findArchivalByUserId(id, userId, LocalDate.now());
 		return mapOrderToOrderResponse(order);
 	}

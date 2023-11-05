@@ -28,33 +28,25 @@ public class OrdersController {
 	
 	@GetMapping
 	public ResponseEntity<List<OrderResponse>> getUserOrders(){
-		//get current user userId by feign or something
-		Long userId = (long) 1;
-		List<OrderResponse> orders = ordersService.getUserOrders(userId);
+		List<OrderResponse> orders = ordersService.getUserOrders();
 		return new ResponseEntity<>(orders, HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<OrderResponse> getUserOrderById(@PathVariable Long id){
-		//for test
-		Long userId = (long) 1;
-		OrderResponse order = ordersService.getUserOrderById(userId);
+		OrderResponse order = ordersService.getUserOrderById(id);
 		return new ResponseEntity<>(order, HttpStatus.OK);
 	}
 	
 	@GetMapping("/archival")
 	public ResponseEntity<List<OrderResponse>> getUserArchivalOrders(){
-		//for test
-		Long userId = (long) 1;
-		List<OrderResponse> orders = ordersService.getUserArchivalOrders(userId);
+		List<OrderResponse> orders = ordersService.getUserArchivalOrders();
 		return new ResponseEntity<>(orders, HttpStatus.OK);
 	}
 	
 	@GetMapping("/archival/{id}")
 	public ResponseEntity<OrderResponse> getUserArchivalOrderById(@PathVariable Long id){
-		//for test
-		Long userId = (long) 1;
-		OrderResponse order = ordersService.getUserArchivalOrderById(id, userId);
+		OrderResponse order = ordersService.getUserArchivalOrderById(id);
 		return new ResponseEntity<>(order, HttpStatus.OK);
 	}
 	

@@ -54,9 +54,10 @@ public class AuthenticationService {
 				.build();
 	}
 
-	public String getLoggedInUserUsername() {
+	public Long getLoggedInUserId() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		return auth.getPrincipal().toString();
+		User user = userRepository.findByEmail(auth.getPrincipal().toString()).orElseThrow();
+		return user.getId();
 	}
 	
 
