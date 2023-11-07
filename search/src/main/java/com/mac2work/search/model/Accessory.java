@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name="acceessories")
+@Entity(name="accessories")
 public class Accessory {
 	
 	@Id

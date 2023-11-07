@@ -52,5 +52,12 @@ public class AuthenticationService {
 				.build();
 	}
 
+	public Long getLoggedInUserId(String token) {
+		String username = jwtService.extractUsername(token.substring(7));
+		User user = userRepository.findByEmail(username).orElseThrow();
+		return user.getId();
+	}
+	
+
 	
 }

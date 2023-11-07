@@ -29,7 +29,7 @@ public class User implements UserDetails{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
 	@GenericGenerator(name = "native")
-	private Integer id;
+	private Long id;
 	private String firstName;
 	private String lastName;
 	private String email;
@@ -61,7 +61,7 @@ public class User implements UserDetails{
 	@Override
 	public boolean isCredentialsNonExpired() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 	@Override
 	public boolean isEnabled() {

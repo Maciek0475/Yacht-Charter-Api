@@ -14,12 +14,13 @@ public interface OrderRepository extends JpaRepository<Order, Long>{
 
 	List<Order> findAllByUserId(Long userId);
 
-	Order findByUserId(Long userId);
-
 	@Query("select o from orders o where o.userId = ?1 and o.to < ?2")
 	List<Order> findAllArchivalByUserId(Long userId, LocalDate currentTime);
 
 	@Query("select o from orders o where o.id = ?1 and o.userId = ?2 and  o.to < ?3")
 	Order findArchivalByUserId(Long id, Long userId, LocalDate now);
+	
+	@Query("select o from orders o where o.id = ?1 and o.userId = ?2")
+	Order findByUserId(Long id, Long userId);
 
 }
