@@ -2,8 +2,6 @@ package com.mac2work.userpanel.service;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -54,9 +52,9 @@ public class AuthenticationService {
 				.build();
 	}
 
-	public Long getLoggedInUserId() {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		User user = userRepository.findByEmail(auth.getPrincipal().toString()).orElseThrow();
+	public Long getLoggedInUserId(String token) {
+		String username = jwtService.extractUsername(token.substring(7));
+		User user = userRepository.findByEmail(username).orElseThrow();
 		return user.getId();
 	}
 	
