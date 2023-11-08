@@ -12,15 +12,18 @@ import com.mac2work.orders.model.Order;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long>{
 
-	List<Order> findAllByUserId(Long userId);
+	@Query("select u from orders u where u.userId = ?1 and u.to > ?2")
+	List<Order> findAllActualByUserId(Long userId, LocalDate currentTime);
+	
+	@Query("select u from orders u where u.id = ?1 and u.userId = ?2 and u.to > ?3")
+	Order findActualByUserId(Long id, Long userId, LocalDate currentTime);
 
-	@Query("select o from orders o where o.userId = ?1 and o.to < ?2")
+	@Query("select u from orders u where u.userId = ?1 and u.to < ?2")
 	List<Order> findAllArchivalByUserId(Long userId, LocalDate currentTime);
 
-	@Query("select o from orders o where o.id = ?1 and o.userId = ?2 and  o.to < ?3")
+	@Query("select u from orders u where u.id = ?1 and u.userId = ?2 and  u.to < ?3")
 	Order findArchivalByUserId(Long id, Long userId, LocalDate now);
 	
-	@Query("select o from orders o where o.id = ?1 and o.userId = ?2")
-	Order findByUserId(Long id, Long userId);
+	
 
 }

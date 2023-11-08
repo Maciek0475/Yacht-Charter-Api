@@ -27,14 +27,14 @@ public class OrdersController {
 	private final OrdersService ordersService;
 	
 	@GetMapping
-	public ResponseEntity<List<OrderResponse>> getUserOrders(){
-		List<OrderResponse> orders = ordersService.getUserOrders();
+	public ResponseEntity<List<OrderResponse>> getUserActualOrders(){
+		List<OrderResponse> orders = ordersService.getUserActualOrders();
 		return new ResponseEntity<>(orders, HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<OrderResponse> getUserOrderById(@PathVariable Long id){
-		OrderResponse order = ordersService.getUserOrderById(id);
+	public ResponseEntity<OrderResponse> getUserActualOrderById(@PathVariable Long id){
+		OrderResponse order = ordersService.getUserActualOrderById(id);
 		return new ResponseEntity<>(order, HttpStatus.OK);
 	}
 	
