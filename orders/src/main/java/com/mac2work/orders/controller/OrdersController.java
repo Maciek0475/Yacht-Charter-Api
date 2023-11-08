@@ -18,6 +18,7 @@ import com.mac2work.orders.response.ApiResponse;
 import com.mac2work.orders.response.OrderResponse;
 import com.mac2work.orders.service.OrdersService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -51,13 +52,13 @@ public class OrdersController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest orderRequest){
+	public ResponseEntity<OrderResponse> createOrder(@Valid @RequestBody OrderRequest orderRequest){
 		OrderResponse orderResponse = ordersService.createOrder(orderRequest);
 		return new ResponseEntity<>(orderResponse, HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<OrderResponse> updateOrder(@RequestBody OrderRequest orderRequest, @PathVariable Long id){
+	public ResponseEntity<OrderResponse> updateOrder(@Valid @RequestBody OrderRequest orderRequest, @PathVariable Long id){
 		OrderResponse orderResponse = ordersService.updateOrder(orderRequest, id);
 		return new ResponseEntity<>(orderResponse, HttpStatus.OK);
 	}
