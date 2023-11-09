@@ -29,6 +29,7 @@ public class OrderRequest {
 	@Pattern(regexp =  "^\\d{4}-\\d{2}-\\d{2}$", message = "date format is YYYY-MM-DD")
     @NotBlank(message = "to is obligatory")
 	private LocalDate to;
+	@Size(max = 11)
 	@Pattern(regexp = "^\\d+\\.\\d+$", message ="price must be in format: ##.##")
     @NotBlank(message = "price is obligatory")
 	private Double price;
