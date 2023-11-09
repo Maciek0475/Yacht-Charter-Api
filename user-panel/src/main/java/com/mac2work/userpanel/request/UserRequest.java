@@ -1,18 +1,18 @@
 package com.mac2work.userpanel.request;
 
+import com.mac2work.userpanel.model.Role;
+
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class RegisterRequest {
+public class UserRequest {
 	
 	@Size(max = 45)
     @NotBlank(message = "firstName is obligatory")
@@ -26,5 +26,9 @@ public class RegisterRequest {
 	@Size(min = 8)
     @NotBlank(message = "password is obligatory")
 	private String password;
+	@Size(max = 5)
+    @NotBlank(message = "role is obligatory")
+	@Enumerated(EnumType.STRING)
+	private Role role;
 
 }

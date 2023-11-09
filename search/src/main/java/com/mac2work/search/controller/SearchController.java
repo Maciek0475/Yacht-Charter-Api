@@ -52,7 +52,7 @@ public class SearchController {
 		return new ResponseEntity<>(yacht, HttpStatus.OK);
 	}
 	@GetMapping("/{id}/price/{from}/{to}")
-	public ResponseEntity<PriceResponse> getYachtById(@PathVariable Long id, @PathVariable LocalDate from, @PathVariable LocalDate to){
+	public ResponseEntity<PriceResponse> getYachtPrice(@PathVariable Long id, @PathVariable LocalDate from, @PathVariable LocalDate to){
 		PriceResponse priceResponse = searchService.getPrice(id, from, to);
 		return new ResponseEntity<>(priceResponse, HttpStatus.OK);
 	}

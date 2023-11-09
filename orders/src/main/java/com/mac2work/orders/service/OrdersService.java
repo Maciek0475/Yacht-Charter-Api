@@ -78,15 +78,15 @@ public class OrdersService {
 
 	
 
-	public List<OrderResponse> getUserOrders() {
+	public List<OrderResponse> getUserActualOrders() {
 		Long userId = userPanelProxy.getLoggedInUserId();
-		List<Order> orders = orderRepository.findAllByUserId(userId);	
+		List<Order> orders = orderRepository.findAllActualByUserId(userId, LocalDate.now());	
 		return mapOrdersToOrderResponses(orders);
 	}
 
-	public OrderResponse getUserOrderById(Long id) {
+	public OrderResponse getUserActualOrderById(Long id) {
 		Long userId = userPanelProxy.getLoggedInUserId();
-		Order order = orderRepository.findByUserId(id, userId);
+		Order order = orderRepository.findActualByUserId(id, userId, LocalDate.now());
 		return mapOrderToOrderResponse(order);
 	}
 
