@@ -11,7 +11,7 @@ public class OrderResponse {
 	
 	private String yachtModel;
 	private Integer days;
-	private LocalDate from;
-	private LocalDate to;
+	private LocalDate dateFrom;
+	private LocalDate dateTo;
 	private Double price;
 }

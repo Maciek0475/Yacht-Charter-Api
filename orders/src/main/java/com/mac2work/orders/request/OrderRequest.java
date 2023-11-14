@@ -2,9 +2,7 @@ package com.mac2work.orders.request;
 
 import java.time.LocalDate;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,24 +11,16 @@ import lombok.Data;
 public class OrderRequest {
 	
 	
-	@Size(max = 11)
-    @NotBlank(message = "userId is obligatory")
+    @NotNull(message = "userId is obligatory")
 	private Long userId;
-	@Size(max = 11)
-    @NotBlank(message = "yachtId is obligatory")
+    @NotNull(message = "yachtId is obligatory")
 	private Long yachtId;
-	@Size(max = 3)
-	@Pattern(regexp = "^\\d+$", message = "days must be a number")
-    @NotBlank(message = "days are obligatory")
+    @NotNull(message = "days are obligatory")
 	private Integer days;
-	@Pattern(regexp =  "^\\d{4}-\\d{2}-\\d{2}$", message = "date format is YYYY-MM-DD")
-    @NotBlank(message = "from is obligatory")
-	private LocalDate from;
-	@Pattern(regexp =  "^\\d{4}-\\d{2}-\\d{2}$", message = "date format is YYYY-MM-DD")
-    @NotBlank(message = "to is obligatory")
-	private LocalDate to;
-	@Size(max = 11)
-	@Pattern(regexp = "^\\d+\\.\\d+$", message ="price must be in format: ##.##")
-    @NotBlank(message = "price is obligatory")
+    @NotNull(message = "dateFrom is obligatory")
+	private LocalDate dateFrom;
+    @NotNull(message = "dateTo is obligatory")
+	private LocalDate dateTo;
+    @NotNull(message = "price is obligatory")
 	private Double price;
 }

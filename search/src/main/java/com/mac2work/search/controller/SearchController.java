@@ -21,6 +21,7 @@ import com.mac2work.search.response.PriceResponse;
 import com.mac2work.search.response.YachtResponse;
 import com.mac2work.search.service.SearchService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -57,12 +58,12 @@ public class SearchController {
 		return new ResponseEntity<>(priceResponse, HttpStatus.OK);
 	}
 	@PostMapping
-	public ResponseEntity<YachtResponse> addYacht(@RequestBody YachtRequest yachtRequest){
+	public ResponseEntity<YachtResponse> addYacht(@Valid @RequestBody YachtRequest yachtRequest){
 		YachtResponse yachtResponse = searchService.addYacht(yachtRequest);
 		return new ResponseEntity<>(yachtResponse, HttpStatus.CREATED);
 	}
 	@PutMapping("/{id}")
-	public ResponseEntity<YachtResponse> updateYacht(@RequestBody YachtRequest yachtRequest, @PathVariable Long id){
+	public ResponseEntity<YachtResponse> updateYacht(@Valid @RequestBody YachtRequest yachtRequest, @PathVariable Long id){
 		YachtResponse yachtResponse = searchService.updateYacht(yachtRequest, id);
 		return new ResponseEntity<>(yachtResponse, HttpStatus.OK);
 	}
