@@ -1,4 +1,4 @@
-package com.mac2work.exception;
+package com.mac2work.search.exception;
 
 import java.time.LocalDateTime;
 

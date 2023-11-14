@@ -1,4 +1,4 @@
-package com.mac2work.search;
+package com.mac2work.search.exception;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,9 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import com.mac2work.exception.SearchApiError;
-import com.mac2work.search.exception.YachtNotFoundException;
 
 @RestControllerAdvice
 public class SearchExceptionHandler {
