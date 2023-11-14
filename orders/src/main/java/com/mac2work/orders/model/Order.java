@@ -27,8 +27,8 @@ public class Order {
 	private Long userId;
 	private Long yachtId;
 	private Integer days;
-	private LocalDate from;
-	private LocalDate to;
+	private LocalDate dateFrom;
+	private LocalDate dateTo;
 	private Double price;
 
 }
