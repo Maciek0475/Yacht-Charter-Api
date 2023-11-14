@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.mac2work.orders.exception.OrderNotFoundException;
 import com.mac2work.orders.model.Order;
 import com.mac2work.orders.proxy.SearchServiceProxy;
 import com.mac2work.orders.proxy.UserPanelProxy;
@@ -35,8 +36,8 @@ public class OrdersService {
 		return OrderResponse.builder()
 				.yachtModel(getYachtResponse(orderRequest.getYachtId()).getModel())
 				.days(orderRequest.getDays())
-				.from(orderRequest.getFrom())
-				.to(orderRequest.getTo())
+				.dateFrom(orderRequest.getDateFrom())
+				.dateTo(orderRequest.getDateTo())
 				.price(orderRequest.getPrice())
 				.build();
 	}
@@ -45,8 +46,8 @@ public class OrdersService {
 		return OrderResponse.builder()
 				.yachtModel(getYachtResponse(order.getYachtId()).getModel())
 				.days(order.getDays())
-				.from(order.getFrom())
-				.to(order.getTo())
+				.dateFrom(order.getDateFrom())
+				.dateTo(order.getDateTo())
 				.price(order.getPrice())
 				.build();
 	}
@@ -57,8 +58,8 @@ public class OrdersService {
 				.yachtModel(
 						getYachtResponse(order.getYachtId()).getModel())
 				.days(order.getDays())
-				.from(order.getFrom())
-				.to(order.getTo())
+				.dateFrom(order.getDateFrom())
+				.dateTo(order.getDateTo())
 				.price(order.getPrice())
 				.build()).toList();
 	}
@@ -68,9 +69,10 @@ public class OrdersService {
 				.userId(orderRequest.getUserId())
 				.yachtId(orderRequest.getYachtId())
 				.days(orderRequest.getDays())
+				.dateFrom(orderRequest.getDateFrom())
+				.dateTo(orderRequest.getDateTo())
 				.price(orderRequest.getPrice())
 				.build();
-		
 		orderRepository.save(order);
 		
 		return mapOrderRequestToOrderResponse(orderRequest);
@@ -103,22 +105,22 @@ public class OrdersService {
 	}
 
 	public OrderResponse updateOrder(OrderRequest orderRequest, Long id) {
-		Order order = orderRepository.findById(id).orElseThrow();
+		Order order = orderRepository.findById(id).orElseThrow( () -> new OrderNotFoundException("id", id));
 		order.setUserId(orderRequest.getUserId());
 		order.setYachtId(orderRequest.getYachtId());
 		order.setDays(orderRequest.getDays());
-		order.setFrom(orderRequest.getFrom());
-		order.setTo(orderRequest.getTo());
+		order.setDateFrom(orderRequest.getDateFrom());
+		order.setDateTo(orderRequest.getDateTo());
 		order.setPrice(orderRequest.getPrice());
 		
 		orderRepository.save(order);
-		Order updatedOrder = orderRepository.findById(id).orElseThrow();
+		Order updatedOrder = orderRepository.findById(id).orElseThrow( () -> new OrderNotFoundException("id", id));
 		
 		return mapOrderToOrderResponse(updatedOrder);
 	}
 
 	public ApiResponse deleteOrder(Long id) {
-		Order order = orderRepository.findById(id).orElseThrow();
+		Order order = orderRepository.findById(id).orElseThrow( () -> new OrderNotFoundException("id", id));
 		orderRepository.delete(order);
 		
 		return ApiResponse.builder()
