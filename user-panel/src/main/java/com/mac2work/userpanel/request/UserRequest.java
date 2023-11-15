@@ -6,6 +6,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
@@ -26,8 +27,7 @@ public class UserRequest {
 	@Size(min = 8)
     @NotBlank(message = "password is obligatory")
 	private String password;
-	@Size(max = 5)
-    @NotBlank(message = "role is obligatory")
+    @NotNull(message = "role is obligatory")
 	@Enumerated(EnumType.STRING)
 	private Role role;
 
