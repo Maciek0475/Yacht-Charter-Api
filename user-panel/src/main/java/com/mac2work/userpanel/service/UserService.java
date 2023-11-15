@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.mac2work.userpanel.exception.UserNotFoundException;
 import com.mac2work.userpanel.model.User;
 import com.mac2work.userpanel.repository.UserRepository;
 import com.mac2work.userpanel.request.UserRequest;
@@ -36,12 +37,12 @@ public class UserService {
 	}
 
 	public UserResponse getUserByid(Long id) {
-		User user = userRepository.findById(id).orElseThrow();
+		User user = userRepository.findById(id).orElseThrow( () -> new UserNotFoundException("id", id));
 		return mapToUserResponse(user);
 	}
 
 	public UserResponse updateUser(Long id, UserRequest userRequest) {
-		User user = userRepository.findById(id).orElseThrow();
+		User user = userRepository.findById(id).orElseThrow( () -> new UserNotFoundException("id", id));
 		user.setFirstName(userRequest.getFirstName());
 		user.setLastName(userRequest.getLastName());
 		user.setEmail(userRequest.getEmail());
@@ -49,12 +50,12 @@ public class UserService {
 		user.setRole(userRequest.getRole());
 		userRepository.save(user);
 		
-		User updatedUser = userRepository.findById(id).orElseThrow();
+		User updatedUser = userRepository.findById(id).orElseThrow( () -> new UserNotFoundException("id", id));
 		return mapToUserResponse(updatedUser);
 	}
 
 	public ApiResponse deleteUser(Long id) {
-		User user = userRepository.findById(id).orElseThrow();
+		User user = userRepository.findById(id).orElseThrow( () -> new UserNotFoundException("id", id));
 		userRepository.delete(user);
 
 		return ApiResponse.builder()

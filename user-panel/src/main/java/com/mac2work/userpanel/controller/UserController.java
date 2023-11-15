@@ -17,6 +17,7 @@ import com.mac2work.userpanel.response.ApiResponse;
 import com.mac2work.userpanel.response.UserResponse;
 import com.mac2work.userpanel.service.UserService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -40,7 +41,7 @@ public class UserController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<UserResponse> UpdateUser(@PathVariable Long id, @RequestBody UserRequest userRequest){
+	public ResponseEntity<UserResponse> UpdateUser(@PathVariable Long id, @Valid @RequestBody UserRequest userRequest){
 		UserResponse user = userService.updateUser(id, userRequest);
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}

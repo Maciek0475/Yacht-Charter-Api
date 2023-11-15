@@ -14,6 +14,7 @@ import com.mac2work.userpanel.request.RegisterRequest;
 import com.mac2work.userpanel.response.AuthenticationResponse;
 import com.mac2work.userpanel.service.AuthenticationService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 
@@ -25,12 +26,12 @@ public class AuthenticationController {
 	private final AuthenticationService authenticationService;
 	
 	@PostMapping("/register")
-	public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest registerRequest){
+	public ResponseEntity<AuthenticationResponse> register(@Valid @RequestBody RegisterRequest registerRequest){
 		return new ResponseEntity<>(authenticationService.register(registerRequest), HttpStatus.CREATED);
 	}
 	
 	@PostMapping("/authenticate")
-	public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest authenticationRequest){
+	public ResponseEntity<AuthenticationResponse> authenticate(@Valid @RequestBody AuthenticationRequest authenticationRequest){
 		return new ResponseEntity<>(authenticationService.authenticate(authenticationRequest), HttpStatus.OK);
 	}
 	
