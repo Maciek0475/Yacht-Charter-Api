@@ -29,5 +29,11 @@ public class UserPanelExceptionHandler {
 		UserApiError userApiError = new UserApiError(HttpStatus.NOT_FOUND, exc.getMessage());
 		return new ResponseEntity<>(userApiError, userApiError.getHttpStatus());
 	}
+	
+	@ExceptionHandler(IncorrectUserException.class)
+	public ResponseEntity<UserApiError> handleIncorrectUser(IncorrectUserException exc){
+		UserApiError userApiError = new UserApiError(HttpStatus.UNAUTHORIZED, exc.getMessage());
+		return new ResponseEntity<>(userApiError, userApiError.getHttpStatus());
+	}
 
 }

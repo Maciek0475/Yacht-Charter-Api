@@ -2,7 +2,7 @@ package com.mac2work.userpanel.service;
 
 import org.springframework.stereotype.Service;
 
-import com.mac2work.forumrestapi.exception.IncorrectUserException;
+import com.mac2work.userpanel.exception.IncorrectUserException;
 import com.mac2work.userpanel.exception.UserNotFoundException;
 import com.mac2work.userpanel.model.Role;
 import com.mac2work.userpanel.model.User;
