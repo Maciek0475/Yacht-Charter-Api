@@ -21,6 +21,7 @@ public class UserService {
 
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
+	private final AuthorizationService authorizationService;
 	
 	private UserResponse mapToUserResponse(User user) {
 		return UserResponse.builder()
@@ -31,17 +32,20 @@ public class UserService {
 				.build();
 	}
 
-	public List<UserResponse> getUsers() {
+	public List<UserResponse> getUsers(String token) {
+		authorizationService.isAdmin(token, "/users", "GET");
 		return userRepository.findAll().stream()
 				.map( user -> mapToUserResponse(user)).toList();
 	}
 
-	public UserResponse getUserByid(Long id) {
+	public UserResponse getUserByid(String token, Long id) {
+		authorizationService.isCorrectUser(token, id, "user");
 		User user = userRepository.findById(id).orElseThrow( () -> new UserNotFoundException("id", id));
 		return mapToUserResponse(user);
 	}
 
-	public UserResponse updateUser(Long id, UserRequest userRequest) {
+	public UserResponse updateUser(String token, Long id, UserRequest userRequest) {
+		authorizationService.isAdmin(token, "/users", "PUT");
 		User user = userRepository.findById(id).orElseThrow( () -> new UserNotFoundException("id", id));
 		user.setFirstName(userRequest.getFirstName());
 		user.setLastName(userRequest.getLastName());
@@ -54,7 +58,8 @@ public class UserService {
 		return mapToUserResponse(updatedUser);
 	}
 
-	public ApiResponse deleteUser(Long id) {
+	public ApiResponse deleteUser(String token, Long id) {
+		authorizationService.isAdmin(token, "/users", "DELETE");
 		User user = userRepository.findById(id).orElseThrow( () -> new UserNotFoundException("id", id));
 		userRepository.delete(user);
 

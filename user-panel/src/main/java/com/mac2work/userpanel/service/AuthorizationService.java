@@ -3,6 +3,7 @@ package com.mac2work.userpanel.service;
 import org.springframework.stereotype.Service;
 
 import com.mac2work.userpanel.exception.IncorrectUserException;
+import com.mac2work.userpanel.exception.NoAccessException;
 import com.mac2work.userpanel.exception.UserNotFoundException;
 import com.mac2work.userpanel.model.Role;
 import com.mac2work.userpanel.model.User;
@@ -29,9 +30,11 @@ public class AuthorizationService {
 		return isAdmin;
 	}
 	
-	public boolean isAdmin(String token, String mappingMethod) {
+	public boolean isAdmin(String token, String path, String mappingMethod) {
 		User user = getLoggedInUser(token);
 		boolean isAdmin = user.getRole().equals(Role.ADMIN);
+		if(!isAdmin)
+			throw new NoAccessException(path, mappingMethod, Role.ADMIN);
 		return isAdmin;
 	}
 	

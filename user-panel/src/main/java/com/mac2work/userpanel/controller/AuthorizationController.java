@@ -17,8 +17,8 @@ public class AuthorizationController {
 	private final AuthorizationService authorizationService;
 	
 	@GetMapping("/is-admin")
-	public boolean isAdmin(@RequestHeader (name="Authorization") String token, String mappingMethod) {
-		return authorizationService.isAdmin(token, mappingMethod);
+	public boolean isAdmin(@RequestHeader (name="Authorization") String token, String path, String mappingMethod) {
+		return authorizationService.isAdmin(token, path, mappingMethod);
 	}
 	
 	@GetMapping("/is-correct-user")
