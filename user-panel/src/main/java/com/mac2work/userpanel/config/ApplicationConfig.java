@@ -29,7 +29,7 @@ public class ApplicationConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http
-				.authorizeHttpRequests(request -> request.requestMatchers("/user/auth/**").permitAll())
+				.authorizeHttpRequests(request -> request.requestMatchers("/user/**").permitAll())
 				.csrf(csrf -> csrf.disable())
 				.build();
 				

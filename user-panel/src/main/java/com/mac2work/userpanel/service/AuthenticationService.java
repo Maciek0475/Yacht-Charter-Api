@@ -5,6 +5,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.mac2work.userpanel.exception.UserNotFoundException;
 import com.mac2work.userpanel.model.Role;
 import com.mac2work.userpanel.model.User;
 import com.mac2work.userpanel.repository.UserRepository;
@@ -45,7 +46,7 @@ public class AuthenticationService {
 						request.getPassword()
 						)
 				);
-		User user = userRepository.findByEmail(request.getEmail()).orElseThrow();
+		User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new UserNotFoundException("email", request.getEmail()));
 		String jwtToken = jwtService.generateToken(user);
 		return AuthenticationResponse.builder()
 				.token(jwtToken)

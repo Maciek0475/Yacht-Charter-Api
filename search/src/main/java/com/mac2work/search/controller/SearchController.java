@@ -3,8 +3,6 @@ package com.mac2work.search.controller;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,7 +24,6 @@ import com.mac2work.search.service.SearchService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-@Aspect
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/search")
@@ -61,19 +58,16 @@ public class SearchController {
 		return new ResponseEntity<>(priceResponse, HttpStatus.OK);
 	}
 	@PostMapping
-	@Before("@userPanelProxy.isAdmin('/search', 'POST')")
 	public ResponseEntity<YachtResponse> addYacht(@Valid @RequestBody YachtRequest yachtRequest){
 		YachtResponse yachtResponse = searchService.addYacht(yachtRequest);
 		return new ResponseEntity<>(yachtResponse, HttpStatus.CREATED);
 	}
 	@PutMapping("/{id}")
-	@Before("@userPanelProxy.isAdmin('/search', 'PUT')")
 	public ResponseEntity<YachtResponse> updateYacht(@Valid @RequestBody YachtRequest yachtRequest, @PathVariable Long id){
 		YachtResponse yachtResponse = searchService.updateYacht(yachtRequest, id);
 		return new ResponseEntity<>(yachtResponse, HttpStatus.OK);
 	}
 	@DeleteMapping("/{id}")
-	@Before("@userPanelProxy.isAdmin('/search', 'DELETE')")
 	public ResponseEntity<ApiResponse> deleteYacht(@PathVariable Long id){
 		ApiResponse apiResponse = searchService.deleteYacht(id);
 		return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());

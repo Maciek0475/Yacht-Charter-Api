@@ -12,7 +12,6 @@ public class RouteValidator {
 	public static final List<String> unsecApiEndpoints = List.of(
 			"/user/auth/authenticate",
 			"/user/auth/register",
-			"/user/auth/id",
 			"/eureka"
 			);
 	

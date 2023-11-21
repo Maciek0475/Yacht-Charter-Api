@@ -32,5 +32,6 @@ public class AuthenticationController {
 	public ResponseEntity<AuthenticationResponse> authenticate(@Valid @RequestBody AuthenticationRequest authenticationRequest){
 		return new ResponseEntity<>(authenticationService.authenticate(authenticationRequest), HttpStatus.OK);
 	}
+	
 
 }

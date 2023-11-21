@@ -2,8 +2,6 @@ package com.mac2work.orders.controller;
 
 import java.util.List;
 
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,7 +21,6 @@ import com.mac2work.orders.service.OrdersService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-@Aspect
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/orders")
@@ -62,14 +59,12 @@ public class OrdersController {
 	}
 	
 	@PutMapping("/{id}")
-	@Before("@userPanelProxy.isAdmin('/orders', 'PUT')")
 	public ResponseEntity<OrderResponse> updateOrder(@Valid @RequestBody OrderRequest orderRequest, @PathVariable Long id){
 		OrderResponse orderResponse = ordersService.updateOrder(orderRequest, id);
 		return new ResponseEntity<>(orderResponse, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{id}")
-	@Before("@userPanelProxy.isAdmin('/orders', 'DELETE')")
 	public ResponseEntity<ApiResponse> deleteOrder(@PathVariable Long id){
 		ApiResponse apiResponse = ordersService.deleteOrder(id);
 		return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
