@@ -29,4 +29,10 @@ public class SearchExceptionHandler {
 		SearchApiError searchApiError = new SearchApiError(HttpStatus.NOT_FOUND, exc.getMessage());
 		return new ResponseEntity<>(searchApiError, searchApiError.getHttpStatus());
 	}
+	
+	@ExceptionHandler(UserPanelProxyException.class)
+	public ResponseEntity<SearchApiError> handleNoAccess(UserPanelProxyException exc){
+		SearchApiError ordersApiError = new SearchApiError(exc.getHttpStatus(), exc.getMessage());
+		return new ResponseEntity<>(ordersApiError, ordersApiError.getHttpStatus());	
+	}
 }

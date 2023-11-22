@@ -18,13 +18,13 @@ public class NoAccessException extends RuntimeException {
 	
 	public NoAccessException(String path, String mappingMethod, Role requiredRole) {
 		this.path = path;
-		this.mappingMethod = mappingMethod;
+		this.mappingMethod = mappingMethod.toUpperCase();
 		this.requiredRole = requiredRole;
 		formatMessage();
 	}
 	private void formatMessage() {
 
-		this.message = String.format("You have no privileges to access: '%s' through %s mapping, required privilege is: '%s'", path, mappingMethod, requiredRole);
+		this.message = String.format("You have no privileges to access: '/%s' through %s mapping, required privilege is: '%s'", path, mappingMethod, requiredRole);
 	}
 
 }

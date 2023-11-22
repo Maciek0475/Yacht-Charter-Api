@@ -30,4 +30,11 @@ public class OrdersExceptionHandler {
 		OrdersApiError ordersApiError = new OrdersApiError(HttpStatus.NOT_FOUND, exc.getMessage());
 		return new ResponseEntity<>(ordersApiError, ordersApiError.getHttpStatus());	
 	}
+	
+	@ExceptionHandler(UserPanelProxyException.class)
+	public ResponseEntity<OrdersApiError> handleNoAccess(UserPanelProxyException exc){
+		OrdersApiError ordersApiError = new OrdersApiError(exc.getHttpStatus(), exc.getMessage());
+		return new ResponseEntity<>(ordersApiError, ordersApiError.getHttpStatus());	
+	}
+	
 }

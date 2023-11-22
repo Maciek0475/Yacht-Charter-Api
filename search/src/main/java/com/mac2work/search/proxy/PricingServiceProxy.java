@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.mac2work.search.response.PriceResponse;
 
-@FeignClient(name="PRICING-SERVICE")
+@FeignClient(name="PRICING-SERVICE", configuration= UserPanelProxyErrorDecoder.class)
 public interface PricingServiceProxy {
 
 	@GetMapping("/pricing/{priceFrom}/{from}/{to}")
