@@ -78,8 +78,6 @@ public class OrdersService {
 		return mapOrderRequestToOrderResponse(orderRequest);
 	}
 
-	
-
 	public List<OrderResponse> getUserActualOrders() {
 		Long userId = userPanelProxy.getLoggedInUserId();
 		List<Order> orders = orderRepository.findAllActualByUserId(userId, LocalDate.now());	
@@ -105,6 +103,7 @@ public class OrdersService {
 	}
 
 	public OrderResponse updateOrder(OrderRequest orderRequest, Long id) {
+		userPanelProxy.isAdmin("orders", "put");
 		Order order = orderRepository.findById(id).orElseThrow( () -> new OrderNotFoundException("id", id));
 		order.setUserId(orderRequest.getUserId());
 		order.setYachtId(orderRequest.getYachtId());
@@ -120,6 +119,7 @@ public class OrdersService {
 	}
 
 	public ApiResponse deleteOrder(Long id) {
+		userPanelProxy.isAdmin("orders", "delete");
 		Order order = orderRepository.findById(id).orElseThrow( () -> new OrderNotFoundException("id", id));
 		orderRepository.delete(order);
 		

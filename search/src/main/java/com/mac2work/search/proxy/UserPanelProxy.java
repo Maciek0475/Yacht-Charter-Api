@@ -1,16 +1,15 @@
-package com.mac2work.orders.proxy;
+package com.mac2work.search.proxy;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name="USER-PANEL", configuration = UserPanelProxyErrorDecoder.class)
+@FeignClient(name="USER-PANEL")
 public interface UserPanelProxy {
-	
-	@GetMapping("/user/authorization/id")
-	public Long getLoggedInUserId();
 	
 	@GetMapping("/user/authorization/is-admin/{path}/{mappingMethod}")
 	public boolean isAdmin(@PathVariable String path, @PathVariable String mappingMethod);
 	
+	
+
 }

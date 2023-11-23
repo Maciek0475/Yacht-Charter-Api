@@ -1,4 +1,4 @@
-package com.mac2work.search.exception;
+package com.mac2work.userpanel.exception;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class SearchExceptionHandler {
+public class UserPanelExceptionHandler {
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<Map<String, Map<String, String>>> handleMethodArgumentNotValid(MethodArgumentNotValidException exc) {
@@ -24,15 +24,21 @@ public class SearchExceptionHandler {
        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
    }
 	
-	@ExceptionHandler(YachtNotFoundException.class)
-	public ResponseEntity<SearchApiError> handleYachtNotFound(YachtNotFoundException exc){
-		SearchApiError searchApiError = new SearchApiError(HttpStatus.NOT_FOUND, exc.getMessage());
-		return new ResponseEntity<>(searchApiError, searchApiError.getHttpStatus());
+	@ExceptionHandler(UserNotFoundException.class)
+	public ResponseEntity<UserApiError> handleUserNotFound(UserNotFoundException exc){
+		UserApiError userApiError = new UserApiError(HttpStatus.NOT_FOUND, exc.getMessage());
+		return new ResponseEntity<>(userApiError, userApiError.getHttpStatus());
 	}
 	
-	@ExceptionHandler(UserPanelProxyException.class)
-	public ResponseEntity<SearchApiError> handleNoAccess(UserPanelProxyException exc){
-		SearchApiError ordersApiError = new SearchApiError(exc.getHttpStatus(), exc.getMessage());
-		return new ResponseEntity<>(ordersApiError, ordersApiError.getHttpStatus());	
+	@ExceptionHandler(IncorrectUserException.class)
+	public ResponseEntity<UserApiError> handleIncorrectUser(IncorrectUserException exc){
+		UserApiError userApiError = new UserApiError(HttpStatus.UNAUTHORIZED, exc.getMessage());
+		return new ResponseEntity<>(userApiError, userApiError.getHttpStatus());
 	}
+	@ExceptionHandler(NoAccessException.class)
+	public ResponseEntity<UserApiError> handleNoAccess(NoAccessException exc){
+		UserApiError userApiError = new UserApiError(HttpStatus.UNAUTHORIZED, exc.getMessage());
+		return new ResponseEntity<>(userApiError, userApiError.getHttpStatus());
+	}
+
 }

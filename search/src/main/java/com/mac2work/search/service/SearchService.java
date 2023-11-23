@@ -11,6 +11,7 @@ import com.mac2work.search.exception.YachtNotFoundException;
 import com.mac2work.search.model.Propulsion;
 import com.mac2work.search.model.Yacht;
 import com.mac2work.search.proxy.PricingServiceProxy;
+import com.mac2work.search.proxy.UserPanelProxy;
 import com.mac2work.search.repository.YachtRepository;
 import com.mac2work.search.request.YachtRequest;
 import com.mac2work.search.response.ApiResponse;
@@ -25,6 +26,7 @@ public class SearchService {
 
 	private final YachtRepository yachtRepository;
 	private final PricingServiceProxy pricingServiceProxy;
+	private final UserPanelProxy userPanelProxy;
 
 	
 	private YachtResponse mapToYachtResponse(Yacht yacht) {
@@ -80,12 +82,14 @@ public class SearchService {
 				.build();
 	}
 	public YachtResponse addYacht(YachtRequest yachtRequest) {
+		userPanelProxy.isAdmin("search", "post");
 		Yacht yacht = mapYachtRequestToYacht(yachtRequest);
 		yachtRepository.save(yacht);
 		
 		return mapToYachtResponse(yacht);
 	}
 	public YachtResponse updateYacht(YachtRequest yachtRequest, Long id) {
+		userPanelProxy.isAdmin("search", "put");
 		Yacht yacht = yachtRepository.findById(id).orElseThrow(() -> new YachtNotFoundException("id", id));
 		yacht.setModel(yachtRequest.getModel());
 		yacht.setPropulsion(yachtRequest.getPropulsion());
@@ -100,6 +104,7 @@ public class SearchService {
 		return mapToYachtResponse(updatedYacht);		
 	}
 	public ApiResponse deleteYacht(Long id) {
+		userPanelProxy.isAdmin("search", "delete");
 		Yacht yacht = yachtRepository.findById(id).orElseThrow(() -> new YachtNotFoundException("id", id));
 		yachtRepository.delete(yacht);
 		return ApiResponse.builder()
