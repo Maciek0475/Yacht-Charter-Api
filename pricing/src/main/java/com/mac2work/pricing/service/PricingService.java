@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class PricingService {
+	
 	public PricingResponse calculatePrice(Double priceFrom, LocalDate from, LocalDate to) {
 		int days = to.getDayOfYear() - from.getDayOfYear();
 		Double price = priceFrom * calculateMultiplicator(days);
@@ -23,10 +24,10 @@ public class PricingService {
 	}
 	
 	public Double calculateMultiplicator(int days) {
-		Double multiplicator = 1.0;
+		Double multiplicator = 0.0;
 		if(days >= 14) {
-			days -= days/7 * 7;
 			multiplicator += days/7 * 7 * PriceMultiplicator.ABOVE_WEEK.getMultiplicator();
+			days -= days/7 * 7;
 		}else if(days >= 7) {
 			days -= 7;
 			multiplicator += 7 * PriceMultiplicator.WEEK.getMultiplicator();
