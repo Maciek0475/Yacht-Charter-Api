@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.mac2work.search.exception.YachtNotFoundException;
+import com.mac2work.search.exception.ResourceNotFoundException;
 import com.mac2work.search.model.Propulsion;
 import com.mac2work.search.model.Yacht;
 import com.mac2work.search.proxy.PricingServiceProxy;
@@ -40,7 +40,7 @@ public class SearchService {
 			.build();
 	}
 	private Yacht getRawYachtById(Long id) {
-		return yachtRepository.findById(id).orElseThrow(() -> new YachtNotFoundException("id", id));
+		return yachtRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Yacht", "id", id));
 	}
 	
 	private Yacht mapYachtRequestToYacht(YachtRequest yachtRequest) {
@@ -68,7 +68,7 @@ public class SearchService {
 	}
 	
 	public YachtResponse getYachtById(Long id) {
-		Yacht yacht = yachtRepository.findById(id).orElseThrow(() -> new YachtNotFoundException("id", id));
+		Yacht yacht = yachtRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Yacht", "id", id));
 		return mapToYachtResponse(yacht);
 	}
 	
@@ -90,7 +90,7 @@ public class SearchService {
 	}
 	public YachtResponse updateYacht(YachtRequest yachtRequest, Long id) {
 		userPanelProxy.isAdmin("search", "put");
-		Yacht yacht = yachtRepository.findById(id).orElseThrow(() -> new YachtNotFoundException("id", id));
+		Yacht yacht = yachtRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Yacht", "id", id));
 		yacht.setModel(yachtRequest.getModel());
 		yacht.setPropulsion(yachtRequest.getPropulsion());
 		yacht.setLength(yachtRequest.getLength());
@@ -100,12 +100,12 @@ public class SearchService {
 		yacht.setAccessories(yachtRequest.getAccessories());
 		yachtRepository.save(yacht);
 		
-		Yacht updatedYacht = yachtRepository.findById(id).orElseThrow(() -> new YachtNotFoundException("id", id));
+		Yacht updatedYacht = yachtRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Yacht", "id", id));
 		return mapToYachtResponse(updatedYacht);		
 	}
 	public ApiResponse deleteYacht(Long id) {
 		userPanelProxy.isAdmin("search", "delete");
-		Yacht yacht = yachtRepository.findById(id).orElseThrow(() -> new YachtNotFoundException("id", id));
+		Yacht yacht = yachtRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Yacht", "id", id));
 		yachtRepository.delete(yacht);
 		return ApiResponse.builder()
 				.isSuccess(Boolean.TRUE)

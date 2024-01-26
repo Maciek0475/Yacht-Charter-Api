@@ -24,8 +24,8 @@ public class SearchExceptionHandler {
        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
    }
 	
-	@ExceptionHandler(YachtNotFoundException.class)
-	public ResponseEntity<SearchApiError> handleYachtNotFound(YachtNotFoundException exc){
+	@ExceptionHandler(ResourceNotFoundException.class)
+	public ResponseEntity<SearchApiError> handleYachtNotFound(ResourceNotFoundException exc){
 		SearchApiError searchApiError = new SearchApiError(HttpStatus.NOT_FOUND, exc.getMessage());
 		return new ResponseEntity<>(searchApiError, searchApiError.getHttpStatus());
 	}

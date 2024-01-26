@@ -11,6 +11,6 @@ import com.mac2work.search.model.Yacht;
 @Repository
 public interface YachtRepository extends JpaRepository<Yacht, Long>{
 
-	List<Yacht> findAllByPropulsion(Propulsion motor);
+	List<Yacht> findAllByPropulsion(Propulsion propulsion);
 
 }

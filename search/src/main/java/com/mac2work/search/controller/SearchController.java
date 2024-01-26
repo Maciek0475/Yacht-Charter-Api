@@ -38,12 +38,12 @@ public class SearchController {
 	}
 	@GetMapping("/motor")
 	public ResponseEntity<List<YachtResponse>> getMotorYachts(){
-		List<YachtResponse> yachts = searchService.getMotorYachtsByPropulsion(Propulsion.Motor);
+		List<YachtResponse> yachts = searchService.getMotorYachtsByPropulsion(Propulsion.MOTOR);
 		return new ResponseEntity<>(yachts, HttpStatus.OK);
 	}
 	@GetMapping("/sailing")
 	public ResponseEntity<List<YachtResponse>> getSailingYachts(){
-		List<YachtResponse> yachts = searchService.getMotorYachtsByPropulsion(Propulsion.Sailing);
+		List<YachtResponse> yachts = searchService.getMotorYachtsByPropulsion(Propulsion.SAILING);
 		return new ResponseEntity<>(yachts, HttpStatus.OK);
 	}
 	
