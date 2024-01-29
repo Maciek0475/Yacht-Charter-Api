@@ -66,11 +66,11 @@ class YachtRepositoryTest {
 	}
 
 	@Test
-	final void testFindAllByPropulsion() {
+	final void yachtRepository_findAllByPropulsion_ReturnMoreThanOneYacht() {
 		Propulsion propulsion = Propulsion.SAILING;
 		
 		List<Yacht> yachts = yachtRepository.findAllByPropulsion(propulsion);
-		System.out.println(yachts.get(0));
+
 		assertThat(yachts.size()).isGreaterThan(1);
 	}
 

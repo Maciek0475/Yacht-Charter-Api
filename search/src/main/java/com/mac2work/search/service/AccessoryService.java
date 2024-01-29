@@ -78,6 +78,5 @@ public class AccessoryService {
 				.httpStatus(HttpStatus.NO_CONTENT)
 				.build();
 	}
-
 	
 }

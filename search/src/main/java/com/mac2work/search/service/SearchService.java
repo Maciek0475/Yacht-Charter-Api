@@ -36,11 +36,9 @@ public class SearchService {
 		.length(yacht.getLength())
 		.capacity(yacht.getCapacity())
 		.motorPower(yacht.getMotorPower())
+		.priceFrom(yacht.getPriceFrom())
 		.accessories(yacht.getAccessories())
 			.build();
-	}
-	private Yacht getRawYachtById(Long id) {
-		return yachtRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Yacht", "id", id));
 	}
 	
 	private Yacht mapYachtRequestToYacht(YachtRequest yachtRequest) {
@@ -56,12 +54,11 @@ public class SearchService {
 	}
 
 	public List<YachtResponse> getYachts() {
-
 		return yachtRepository.findAll().stream()
 				.map(yacht -> mapToYachtResponse(yacht)).toList();
 	}
 	
-	public List<YachtResponse> getMotorYachtsByPropulsion(Propulsion propulsion) {
+	public List<YachtResponse> getYachtsByPropulsion(Propulsion propulsion) {
 		List<Yacht> yachts = yachtRepository.findAllByPropulsion(propulsion);
 		return yachts.stream()
 				.map(yacht -> mapToYachtResponse(yacht)).toList();
@@ -73,7 +70,7 @@ public class SearchService {
 	}
 	
 	public PriceResponse getPrice(Long id, LocalDate from, LocalDate to) {
-		Yacht yacht = getRawYachtById(id);
+		Yacht yacht = yachtRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Yacht", "id", id));
 		PriceResponse priceResponse = pricingServiceProxy.getCalculatedPrice(yacht.getPriceFrom(), from, to);
 		return PriceResponse.builder()
 				.yachtModel(yacht.getModel())
@@ -98,9 +95,8 @@ public class SearchService {
 		yacht.setMotorPower(yachtRequest.getMotorPower());
 		yacht.setPriceFrom(yachtRequest.getPriceFrom());
 		yacht.setAccessories(yachtRequest.getAccessories());
-		yachtRepository.save(yacht);
 		
-		Yacht updatedYacht = yachtRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Yacht", "id", id));
+		Yacht updatedYacht = yachtRepository.save(yacht);
 		return mapToYachtResponse(updatedYacht);		
 	}
 	public ApiResponse deleteYacht(Long id) {
