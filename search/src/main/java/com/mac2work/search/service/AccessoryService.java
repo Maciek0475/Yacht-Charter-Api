@@ -33,7 +33,7 @@ public class AccessoryService {
 	}
 	
 	public List<AccessoryResponse> getAccessories() {
-		userPanelProxy.isAdmin("search/accessory", "put");
+		userPanelProxy.isAdmin("search/accessory", "get");
 		List<Accessory> accessories = accessoryRepository.findAll();
 		
 		return accessories.stream().map(
@@ -41,33 +41,32 @@ public class AccessoryService {
 	}
 
 	public AccessoryResponse getAccessoryById(Long id) {
-		userPanelProxy.isAdmin("search/accessory", "put");
+		userPanelProxy.isAdmin("search/accessory/"+id, "get");
 		Accessory accessory = accessoryRepository.findById(id).orElseThrow( () -> new ResourceNotFoundException("Accessory", "id", id));
 		
 		return mapToAccessoryResponse(accessory);
 	}
 	
 	public AccessoryResponse addAccessory(AccessoryRequest accessoryRequest) {
-		userPanelProxy.isAdmin("search/accessory", "put");
+		userPanelProxy.isAdmin("search/accessory", "post");
 		Accessory accessory = mapToAccessory(accessoryRequest);
 		
-		accessoryRepository.save(accessory);
+		accessory = accessoryRepository.save(accessory);
 		
 		return mapToAccessoryResponse(accessory);
 	}
 	
 	public AccessoryResponse updateAccessory(AccessoryRequest accessoryRequest, Long id) {
-		userPanelProxy.isAdmin("search/accessory", "put");
-		
-		
+		userPanelProxy.isAdmin("search/accessory/"+id, "put");
 		Accessory accessory = accessoryRepository.findById(id).orElseThrow( () -> new ResourceNotFoundException("Accessory", "id", id));
 		accessory.setName(accessoryRequest.getName());
-		accessoryRepository.save(accessory);
+		accessory = accessoryRepository.save(accessory);
 		
 		return mapToAccessoryResponse(accessory);
 	}
 	
 	public ApiResponse deleteAccessory(Long id) {
+		userPanelProxy.isAdmin("search/accessory/"+id, "delete");
 		Accessory accessory = accessoryRepository.findById(id).orElseThrow( () -> new ResourceNotFoundException("Accessory", "id", id));
 		
 		accessoryRepository.delete(accessory);

@@ -43,9 +43,7 @@ class SearchServiceTest {
 	
 	private Yacht yacht;
 	private Yacht yacht2;
-	
 	private YachtRequest yachtRequest;
-	
 	private YachtResponse yachtResponse;
 	
 	private Accessory accessory;
