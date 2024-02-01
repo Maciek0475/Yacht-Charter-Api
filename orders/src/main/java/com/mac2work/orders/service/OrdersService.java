@@ -15,7 +15,6 @@ import com.mac2work.orders.repository.OrderRepository;
 import com.mac2work.orders.request.OrderRequest;
 import com.mac2work.orders.response.ApiResponse;
 import com.mac2work.orders.response.OrderResponse;
-import com.mac2work.search.response.YachtResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,25 +25,15 @@ public class OrdersService {
 	private final SearchServiceProxy searchServiceProxy;
 	private final UserPanelProxy userPanelProxy;
 	
-	private YachtResponse getYachtResponse(Long yachtId) {
-		ResponseEntity<YachtResponse> entity = searchServiceProxy.getYachtById(yachtId);
-		YachtResponse yacht = entity.getBody();
-		return yacht;
+	private String getYachtModel(Long yachtId) {
+		ResponseEntity<String> entity = searchServiceProxy.getYachtModel(yachtId);
+		String model = entity.getBody();
+		return model;
 	}
 	
-	private OrderResponse mapOrderRequestToOrderResponse(OrderRequest orderRequest) {
+	private OrderResponse mapToOrderResponse(Order order) {
 		return OrderResponse.builder()
-				.yachtModel(getYachtResponse(orderRequest.getYachtId()).getModel())
-				.days(orderRequest.getDays())
-				.dateFrom(orderRequest.getDateFrom())
-				.dateTo(orderRequest.getDateTo())
-				.price(orderRequest.getPrice())
-				.build();
-	}
-	
-	private OrderResponse mapOrderToOrderResponse(Order order) {
-		return OrderResponse.builder()
-				.yachtModel(getYachtResponse(order.getYachtId()).getModel())
+				.yachtModel(getYachtModel(order.getYachtId()))
 				.days(order.getDays())
 				.dateFrom(order.getDateFrom())
 				.dateTo(order.getDateTo())
@@ -52,17 +41,6 @@ public class OrdersService {
 				.build();
 	}
 	
-	private List<OrderResponse> mapOrdersToOrderResponses(List<Order> orders) {
-		return orders.stream().map(
-				order -> OrderResponse.builder()
-				.yachtModel(
-						getYachtResponse(order.getYachtId()).getModel())
-				.days(order.getDays())
-				.dateFrom(order.getDateFrom())
-				.dateTo(order.getDateTo())
-				.price(order.getPrice())
-				.build()).toList();
-	}
 
 	public OrderResponse createOrder(OrderRequest orderRequest) {
 		Order order = Order.builder()
@@ -73,33 +51,35 @@ public class OrdersService {
 				.dateTo(orderRequest.getDateTo())
 				.price(orderRequest.getPrice())
 				.build();
-		orderRepository.save(order);
+		order = orderRepository.save(order);
 		
-		return mapOrderRequestToOrderResponse(orderRequest);
+		return mapToOrderResponse(order);
 	}
 
 	public List<OrderResponse> getUserActualOrders() {
 		Long userId = userPanelProxy.getLoggedInUserId();
-		List<Order> orders = orderRepository.findAllActualByUserId(userId, LocalDate.now());	
-		return mapOrdersToOrderResponses(orders);
+		List<Order> orders = orderRepository.findAllActualByUserId(userId, LocalDate.now());
+		List<OrderResponse> orderResponses = orders.stream().map(order -> mapToOrderResponse(order)).toList();
+		return orderResponses;
 	}
 
 	public OrderResponse getUserActualOrderById(Long id) {
 		Long userId = userPanelProxy.getLoggedInUserId();
 		Order order = orderRepository.findActualByUserId(id, userId, LocalDate.now());
-		return mapOrderToOrderResponse(order);
+		return mapToOrderResponse(order);
 	}
 
 	public List<OrderResponse> getUserArchivalOrders() {
 		Long userId = userPanelProxy.getLoggedInUserId();
 		List<Order> orders = orderRepository.findAllArchivalByUserId(userId, LocalDate.now());
-		return mapOrdersToOrderResponses(orders);
+		List<OrderResponse> orderResponses = orders.stream().map(order -> mapToOrderResponse(order)).toList();
+		return orderResponses;
 	}
 
 	public OrderResponse getUserArchivalOrderById(Long id) {
 		Long userId = userPanelProxy.getLoggedInUserId();
 		Order order = orderRepository.findArchivalByUserId(id, userId, LocalDate.now());
-		return mapOrderToOrderResponse(order);
+		return mapToOrderResponse(order);
 	}
 
 	public OrderResponse updateOrder(OrderRequest orderRequest, Long id) {
@@ -115,7 +95,7 @@ public class OrdersService {
 		orderRepository.save(order);
 		Order updatedOrder = orderRepository.findById(id).orElseThrow( () -> new OrderNotFoundException("id", id));
 		
-		return mapOrderToOrderResponse(updatedOrder);
+		return mapToOrderResponse(updatedOrder);
 	}
 
 	public ApiResponse deleteOrder(Long id) {

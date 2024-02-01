@@ -22,7 +22,7 @@ public interface OrderRepository extends JpaRepository<Order, Long>{
 	List<Order> findAllArchivalByUserId(Long userId, LocalDate currentTime);
 
 	@Query("select u from orders u where u.id = ?1 and u.userId = ?2 and  u.dateTo < ?3")
-	Order findArchivalByUserId(Long id, Long userId, LocalDate now);
+	Order findArchivalByUserId(Long id, Long userId, LocalDate currentTime);
 	
 	
 

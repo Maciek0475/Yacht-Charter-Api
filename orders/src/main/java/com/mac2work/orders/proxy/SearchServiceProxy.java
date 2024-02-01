@@ -11,8 +11,8 @@ import com.mac2work.search.response.YachtResponse;
 @FeignClient(name="SEARCH-SERVICE")
 public interface SearchServiceProxy {
 
-	@GetMapping("/search/{id}")
-	public ResponseEntity<YachtResponse> getYachtById(@PathVariable Long id);
+	@GetMapping("/search/{id}/model")
+	public ResponseEntity<String> getYachtModel(@PathVariable Long id);
 	
 
 }

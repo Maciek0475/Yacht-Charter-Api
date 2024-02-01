@@ -31,6 +31,12 @@ public class SearchController {
 
 	private final SearchService searchService;
 
+	@GetMapping("/{id}/model")
+	public ResponseEntity<String> getYachtModel(@PathVariable Long id){
+		YachtResponse yachtResponse = searchService.getYachtById(id);
+		return new ResponseEntity<>(yachtResponse.getModel(), HttpStatus.OK);
+	}
+	
 	@GetMapping
 	public ResponseEntity<List<YachtResponse>> getYachts(){
 		List<YachtResponse> yachts = searchService.getYachts();
