@@ -92,10 +92,9 @@ public class OrdersService {
 		order.setDateTo(orderRequest.getDateTo());
 		order.setPrice(orderRequest.getPrice());
 		
-		orderRepository.save(order);
-		Order updatedOrder = orderRepository.findById(id).orElseThrow( () -> new OrderNotFoundException("id", id));
+		order = orderRepository.save(order);
 		
-		return mapToOrderResponse(updatedOrder);
+		return mapToOrderResponse(order);
 	}
 
 	public ApiResponse deleteOrder(Long id) {
