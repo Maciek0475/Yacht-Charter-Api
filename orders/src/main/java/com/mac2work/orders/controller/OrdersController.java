@@ -29,26 +29,26 @@ public class OrdersController {
 	
 	@GetMapping
 	public ResponseEntity<List<OrderResponse>> getUserActualOrders(){
-		List<OrderResponse> orders = ordersService.getUserActualOrders();
-		return new ResponseEntity<>(orders, HttpStatus.OK);
+		List<OrderResponse> orderResponses = ordersService.getUserActualOrders();
+		return new ResponseEntity<>(orderResponses, HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<OrderResponse> getUserActualOrderById(@PathVariable Long id){
-		OrderResponse order = ordersService.getUserActualOrderById(id);
-		return new ResponseEntity<>(order, HttpStatus.OK);
+		OrderResponse orderResponse = ordersService.getUserActualOrderById(id);
+		return new ResponseEntity<>(orderResponse, HttpStatus.OK);
 	}
 	
 	@GetMapping("/archival")
 	public ResponseEntity<List<OrderResponse>> getUserArchivalOrders(){
-		List<OrderResponse> orders = ordersService.getUserArchivalOrders();
-		return new ResponseEntity<>(orders, HttpStatus.OK);
+		List<OrderResponse> orderResponses = ordersService.getUserArchivalOrders();
+		return new ResponseEntity<>(orderResponses, HttpStatus.OK);
 	}
 	
 	@GetMapping("/archival/{id}")
 	public ResponseEntity<OrderResponse> getUserArchivalOrderById(@PathVariable Long id){
-		OrderResponse order = ordersService.getUserArchivalOrderById(id);
-		return new ResponseEntity<>(order, HttpStatus.OK);
+		OrderResponse orderResponse = ordersService.getUserArchivalOrderById(id);
+		return new ResponseEntity<>(orderResponse, HttpStatus.OK);
 	}
 	
 	
