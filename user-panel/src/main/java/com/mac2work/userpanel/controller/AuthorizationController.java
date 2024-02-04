@@ -32,9 +32,5 @@ public class AuthorizationController {
 	public Long getLoggedInUserId(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
 		return authorizationService.getLoggedInUserId(token);
 	}
-	@GetMapping("/ids")
-	public String i() {
-		return "";
-	}
 	
 }
