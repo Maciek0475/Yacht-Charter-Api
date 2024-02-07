@@ -50,8 +50,7 @@ public class AuthorizationService {
 	}
 
 	public Long getLoggedInUserId(String token) {
-		String username = jwtService.extractUsername(token.substring(7));
-		User user = userRepository.findByEmail(username).orElseThrow( () -> new UserNotFoundException("email", username));
+		User user = getLoggedInUser(token);
 		return user.getId();
 	}
 

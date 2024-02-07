@@ -52,10 +52,9 @@ public class UserService {
 		user.setEmail(userRequest.getEmail());
 		user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
 		user.setRole(userRequest.getRole());
-		userRepository.save(user);
+		user = userRepository.save(user);
 		
-		User updatedUser = userRepository.findById(id).orElseThrow( () -> new UserNotFoundException("id", id));
-		return mapToUserResponse(updatedUser);
+		return mapToUserResponse(user);
 	}
 
 	public ApiResponse deleteUser(String token, Long id) {

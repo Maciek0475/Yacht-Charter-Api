@@ -38,7 +38,7 @@ class UserRepositoryTest {
 	}
 
 	@Test
-	final void testFindByEmail() {
+	final void UserRepository_findByEmail_ReturnUser() {
 		Optional<User> user = userRepository.findByEmail(this.user.getEmail());
 		
 		assertThat(user.get()).isEqualTo(this.user);
