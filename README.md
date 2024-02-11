@@ -2,8 +2,9 @@
 Microservices app to charter yachts
 
 ## Getting Started
-
-
+Yacht-Charter-Api is an example of microservices architecture. Microservices communicate to each other through OpenFeign.
+It also uses api gateway and global security. The Application has been created for searching yachts, charter them and manage charters.
+Data is collected to Mysql database through Jpa. 
 
 ### Technology Stack
 Mostly used:
@@ -34,16 +35,16 @@ Check out list of application endpoints.
 
 | Method | Url | Decription | Required privileges | Example of request body | 
 | ------ | --- | ---------- | ------------------- | ----------------------- |
-| POST   | user/auth/register | Sign up | N/A | [JSON](#signup) |
-| POST   | user/auth/authenticate | Sign in | N/A | [JSON](#signin) |
+| POST   | /user/auth/register | Sign up | N/A | [JSON](#register) |
+| POST   | /user/auth/authenticate | Sign in | N/A | [JSON](#authenticate) |
 
 ### Authorization
 
 | Method | Url | Decription | Required privileges | Example of request body | 
 | ------ | --- | ---------- | ------------------- | ----------------------- |
-| GET   | user/authorization/is-admin/{path}/{mappingMethod} | Check if is admin | USER | [JSON](#signup) |
-| GET   | user/authorization/is-correct-user/{id}/{resource} | Check if is correct user | USER | [JSON](#signin) |
-| GET   | user/authorization/id | Get logged in user id | USER | [JSON](#signin) |
+| GET   | /user/authorization/is-admin/{path}/{mappingMethod} | Check if is admin | USER | N/A |
+| GET   | /user/authorization/is-correct-user/{id}/{resource} | Check if is correct user | USER | N/A |
+| GET   | /user/authorization/id | Get logged in user id | USER | N/A |
 
 ### Users
 
@@ -64,8 +65,8 @@ Check out list of application endpoints.
 | GET    | /search/sailing | Get sailing yachts | USER | N/A |
 | GET    | /search/{id} | Get specific yacht | USER | N/A |
 | GET    | /search/{id}/price/{from}/{to} | Get yacht price | USER | N/A |
-| POST   | /search | Add yacht | ADMIN | [JSON](#createbook) |
-| PUT    | /search/{id} | Update specific yacht | ADMIN | [JSON](#updatebook) |
+| POST   | /search | Add yacht | ADMIN | [JSON](#createyacht) |
+| PUT    | /search/{id} | Update specific yacht | ADMIN | [JSON](#updateyacht) |
 | DELETE | /search/{id} | Delete specific yacht | ADMIN | N/A |
 
 ### Accessories
@@ -74,8 +75,8 @@ Check out list of application endpoints.
 | ------ | --- | ---------- | ------------------- | ----------------------- |
 | GET    | /search/accessory | Get accessories | ADMIN | N/A |
 | GET    | /search/accessory/{id} | Get specific accessory | ADMIN | N/A 
-| POST   | /search/accessory/{id} | Add accessory | ADMIN | [JSON](#createthread) |
-| PUT    | /search/accessory/{id} | Update specific accessory | ADMIN | [JSON](#updatethread) |
+| POST   | /search/accessory | Add accessory | ADMIN | [JSON](#createaccessory) |
+| PUT    | /search/accessory/{id} | Update specific accessory | ADMIN | [JSON](#updateaccessory) |
 | DELETE   | /search/accessory/{id} | Delete specific accessory | ADMIN | N/A |
 
 
@@ -93,89 +94,108 @@ Check out list of application endpoints.
 | GET    | /orders/{id} | Get logged in user specific order | USER | N/A |
 | GET    | /orders/archival | Get logged in user archival orders | USER | N/A |
 | GET    | /orders/archival/{id} |Get logged in user archival order by id | USER | N/A |
-| POST   | /orders | Add order| USER | [JSON](#createmessage) |
-| PUT    | /orders/{id} | Update specific order | ADMIN | [JSON](#updatemessage) |
+| POST   | /orders | Add order| USER | [JSON](#createorder) |
+| PUT    | /orders/{id} | Update specific order | ADMIN | [JSON](#updateorder) |
 | DELETE   | /orders/{id} | Delete specific order | ADMIN | N/A |
 
 *(\*) Required USER who created it or ADMIN*
 
 ## Request body examples
 
-#### <a id="signup">Sign Up (/auth/authorization)</a>
+#### <a id="register">Sign Up (/user/auth/register)</a>
 ```json
 {
-	"firstName": "Jan",
-	"lastName": "Kowalski",
-	"email": "jan.kowalski@smh.com",
-	"password": "password"
+	"firstName": "Maciej",
+	"lastName": "Jurczak",
+	"email": "maciekjurczak123@smh.com",
+	"password": "P@ssword123"
 }
 ```
 
-#### <a id="signin">Sign In (/auth/authentication)</a>
+#### <a id="authenticate">Sign In (/user/auth/authenticate)</a>
 ```json
 {
-	"email": "jan.kowalski@smh.com",
-	"password": "password"
+	"email": "maciekjurczak123@smh.com",
+	"password": "P@ssword123"
 }
 ```
 
 #### <a id="updateuser">Update User (/users/{id})</a>
 ```json
 {
-	"firstName": "Jan",
-	"lastName": "Kowalski",
-	"email": "jan.kowalski@smh.com",
-	"password": "password"
+	"firstName": "Maciej",
+	"lastName": "Jurczak",
+	"email": "maciekjurczak123@smh.com",
+	"password": "P@ssword123",
+	"role": "user"
 }
 ```
 
-#### <a id="createbook">Create Book (/books)</a>
+#### <a id="createyacht">Create Yacht (/search)</a>
 ```json
 {
-	"name": "Book",
-	"publicationYear": "2023",
-	"description": "An example of book"
+	"model": "Sasanka",
+	"propulsion": "sailing",
+	"length": 6.60,
+	"capacity": 5,
+	"motorPower": 8.0,
+	"priceFrom": 150.0,
+	"accessories":[
+		{"id":1,"name":"tent","yachts":null},
+		{"id":2,"name":"sink","yachts":null}]
 }
 ```
 
-#### <a id="updatebook">Update Book (/books/{id})</a>
+#### <a id="updateyacht">Update Yacht (/search/{id})</a>
 ```json
 {
-	"name": "Updated Book",
-	"publicationYear": "2023",
-	"description": "An updated example of book"
+	"model": "Sasanka",
+	"propulsion": "sailing",
+	"length": 6.60,
+	"capacity": 5,
+	"motorPower": 14.0,
+	"priceFrom": 165.0,
+	"accessories":[
+		{"id":1,"name":"tent","yachts":null},
+		{"id":2,"name":"sink","yachts":null}]
 }
 ```
 
-#### <a id="createthread">Create Thread (/threads)</a>
+#### <a id="createaccessory">Create Accessory (/search/accessory)</a>
 ```json
 {
-	"name": "Thread",
-	"bookId": "1",
-	"content": "What do you think about this book?"
+	"name": "tent"
 }
 ```
 
-#### <a id="updatethread">Update Thread (/threads/{id})</a>
+#### <a id="updateaccessory">Update Accessory (/search/accessory/{id})</a>
 ```json
 {
-	"name": "Updated Thread",
-	"bookId": "1",
-	"content": "What do you think about this book?"
+	"name": "sink"
 }
 ```
 
-#### <a id="createmessage">Create Message (/threads/{id}/messages)</a>
+#### <a id="createorder">Create Order (/orders)</a>
 ```json
 {
-	"content": "I think this book is good."
+	"userId": 1,
+	"yachtId": 1,
+	"days": 10,
+	"dateFrom": "2024-04-15",
+	"dateTo": "2024-04-25",
+	"price": 1722.5
 }
 ```
 
-#### <a id="updatemessage">Update Message (/messages/{id})</a>
+#### <a id="updateorder">Update Order (/orders/{id})</a>
 ```json
 {
-	"content": "I think this book is great!"
+	"userId": 2,
+	"yachtId": 2,
+	"days": 10,
+	"dateFrom": "2024-04-15",
+	"dateTo": "2024-04-25",
+	"price": 1722.5
 }
 ```
 
