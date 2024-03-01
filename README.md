@@ -11,6 +11,7 @@ Mostly used:
 * [Spring Boot](https://spring.io/)
 * [Mysql](https://www.mysql.com/)
 * [JWT](https://jwt.io/)
+* [Docker](https://www.docker.com/)
 
 The project is an example of using several technologies, mainly including:
 * Spring Security
@@ -20,13 +21,27 @@ The project is an example of using several technologies, mainly including:
 * REST
 * JWT
 * Mysql
-
-### Preparing Database
-
-You have to create database and import `rest-api.sql`. In `application.properties`
-you can manipulate connection data as you like.
+* Docker
 
 ### Running Localy
+
+If you want to easily run this application, you must first have docker on your machine.
+
+#### Start Application
+
+Only one command is required to start Yacht-Charter-Api:
+
+```
+docker compose up
+```
+
+#### Stop Application
+
+If you want to stop application you should use command below:
+
+```
+docker compose down
+```
 
 ## Rest endpoints
 Check out list of application endpoints.
