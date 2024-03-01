@@ -77,7 +77,7 @@ class UserControllerTest {
 		apiResponse = ApiResponse.builder()
 				.isSuccess(Boolean.TRUE)
 				.message("User successfully deleted")
-				.httpStatus(HttpStatus.NO_CONTENT)
+				.httpStatus(HttpStatus.OK)
 				.build();
 		token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
 	}
@@ -87,7 +87,7 @@ class UserControllerTest {
 		List<UserResponse> userResponses = List.of(userResponse, userResponse2);
 		when(userService.getUsers(token)).thenReturn(userResponses);
 		
-		ResultActions response = mockMvc.perform(get("/users")
+		ResultActions response = mockMvc.perform(get("/user/users")
 				.contentType(MediaType.APPLICATION_JSON)
 				.header("Authorization", token));
 		
@@ -99,7 +99,7 @@ class UserControllerTest {
 	final void userController_getUserById_ReturnUserResponse() throws Exception {
 		when(userService.getUserByid(token, id)).thenReturn(userResponse);
 		
-		ResultActions response = mockMvc.perform(get("/users/"+id)
+		ResultActions response = mockMvc.perform(get("/user/users/"+id)
 				.contentType(MediaType.APPLICATION_JSON)
 				.header("Authorization", token));
 		
@@ -114,7 +114,7 @@ class UserControllerTest {
 	final void userController_updateUser_ReturnUserResponse() throws Exception {
 		when(userService.updateUser(token, id, userRequest)).thenReturn(userResponse);
 		
-		ResultActions response = mockMvc.perform(put("/users/"+id)
+		ResultActions response = mockMvc.perform(put("/user/users/"+id)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsBytes(userRequest))
 				.header("Authorization", token));
@@ -130,11 +130,11 @@ class UserControllerTest {
 	final void userController_deleteUser_ReturnApiResponse() throws Exception {
 		when(userService.deleteUser(token, id)).thenReturn(apiResponse);
 		
-		ResultActions response = mockMvc.perform(delete("/users/"+id)
+		ResultActions response = mockMvc.perform(delete("/user/users/"+id)
 				.contentType(MediaType.APPLICATION_JSON)
 				.header("Authorization", token));
 		
-		response.andExpect(status().isNoContent())
+		response.andExpect(status().isOk())
 				.andExpect(jsonPath("$.isSuccess", CoreMatchers.is(apiResponse.getIsSuccess())))
 				.andExpect(jsonPath("$.message", CoreMatchers.is(apiResponse.getMessage())))
 				.andExpect(jsonPath("$.httpStatus", CoreMatchers.is(apiResponse.getHttpStatus().name())));

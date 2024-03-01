@@ -27,7 +27,7 @@ public class SearchService {
 	private final YachtRepository yachtRepository;
 	private final PricingServiceProxy pricingServiceProxy;
 	private final UserPanelProxy userPanelProxy;
-
+	private final AccessoryService accessoryService;
 	
 	private YachtResponse mapToYachtResponse(Yacht yacht) {
 		return YachtResponse.builder()
@@ -37,7 +37,8 @@ public class SearchService {
 		.capacity(yacht.getCapacity())
 		.motorPower(yacht.getMotorPower())
 		.priceFrom(yacht.getPriceFrom())
-		.accessories(yacht.getAccessories())
+		.accessories(yacht.getAccessories().stream().map(
+				accessory -> accessoryService.mapToAccessoryResponse(accessory)).toList())
 			.build();
 	}
 	
@@ -106,7 +107,7 @@ public class SearchService {
 		return ApiResponse.builder()
 				.isSuccess(Boolean.TRUE)
 				.message("Yacht deleted successfully")
-				.httpStatus(HttpStatus.NO_CONTENT)
+				.httpStatus(HttpStatus.OK)
 				.build();
 	}
 	

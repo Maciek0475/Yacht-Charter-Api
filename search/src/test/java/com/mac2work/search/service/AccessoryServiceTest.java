@@ -67,7 +67,7 @@ class AccessoryServiceTest {
 
 	@Test
 	final void accessoryService_getAccessories_ReturnMoreThanOneAccessoryResponse() {
-		when(userPanelProxy.isAdmin("search/accessory", "get")).thenReturn(Boolean.TRUE);
+		when(userPanelProxy.isAdmin("accessory", "get")).thenReturn(Boolean.TRUE);
 		when(accessoryRepository.findAll()).thenReturn(List.of(accessory, accessory2));
 		
 		List<AccessoryResponse> accessoryResponses = accessoryService.getAccessories();
@@ -77,7 +77,7 @@ class AccessoryServiceTest {
 
 	@Test
 	final void accessoryService_getAccessoryById_ReturnAccessoryResponse() {
-		when(userPanelProxy.isAdmin("search/accessory/"+id, "get")).thenReturn(Boolean.TRUE);
+		when(userPanelProxy.isAdmin("accessory", "get")).thenReturn(Boolean.TRUE);
 		when(accessoryRepository.findById(id)).thenReturn(Optional.of(accessory));
 		
 		AccessoryResponse accessoryResponse = accessoryService.getAccessoryById(id);
@@ -87,7 +87,7 @@ class AccessoryServiceTest {
 
 	@Test
 	final void accessoryService_addAccessory_ReturnAccessoryResponse() {
-		when(userPanelProxy.isAdmin("search/accessory", "post")).thenReturn(Boolean.TRUE);
+		when(userPanelProxy.isAdmin("accessory", "post")).thenReturn(Boolean.TRUE);
 		when(accessoryRepository.save(any(Accessory.class))).thenReturn(accessory);
 		
 		AccessoryResponse accessoryResponse = accessoryService.addAccessory(accessoryRequest);
@@ -98,9 +98,10 @@ class AccessoryServiceTest {
 	@Test
 	final void accessoryService_updateAccessory_ReturnAccessoryResponse() {
 		Long id = 2L;
-		when(userPanelProxy.isAdmin("search/accessory/"+id, "put")).thenReturn(Boolean.TRUE);
+		when(userPanelProxy.isAdmin("accessory", "put")).thenReturn(Boolean.TRUE);
 		when(accessoryRepository.findById(id)).thenReturn(Optional.of(accessory2));
-		
+		when(accessoryRepository.save(any(Accessory.class))).thenReturn(accessory);
+
 		AccessoryResponse accessoryResponse = accessoryService.updateAccessory(accessoryRequest, id);
 		
 		assertThat(accessoryResponse).isEqualTo(this.accessoryResponse);
@@ -108,7 +109,7 @@ class AccessoryServiceTest {
 
 	@Test
 	final void accessoryService_deleteAccessory_ReturnApiResponse() {
-		when(userPanelProxy.isAdmin("search/accessory/"+id, "delete")).thenReturn(Boolean.TRUE);
+		when(userPanelProxy.isAdmin("accessory", "delete")).thenReturn(Boolean.TRUE);
 		when(accessoryRepository.findById(id)).thenReturn(Optional.of(accessory));
 		
 		ApiResponse apiResponse = accessoryService.deleteAccessory(id);

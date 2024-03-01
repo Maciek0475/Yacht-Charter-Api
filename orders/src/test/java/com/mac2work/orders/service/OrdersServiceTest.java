@@ -99,7 +99,7 @@ class OrdersServiceTest {
 		apiResponse = ApiResponse.builder()
 				.isSuccess(Boolean.TRUE)
 				.message("Order deleted successfully")
-				.httpStatus(HttpStatus.NO_CONTENT)
+				.httpStatus(HttpStatus.OK)
 				.build();
 	}
 

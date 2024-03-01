@@ -105,7 +105,7 @@ public class OrdersService {
 		return ApiResponse.builder()
 				.isSuccess(Boolean.TRUE)
 				.message("Order deleted successfully")
-				.httpStatus(HttpStatus.NO_CONTENT)
+				.httpStatus(HttpStatus.OK)
 				.build();
 	}
 

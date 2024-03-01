@@ -87,7 +87,7 @@ class UserServiceTest {
 		apiResponse = ApiResponse.builder()
 				.isSuccess(Boolean.TRUE)
 				.message("User successfully deleted")
-				.httpStatus(HttpStatus.NO_CONTENT)
+				.httpStatus(HttpStatus.OK)
 				.build();
 		token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
 	}
@@ -96,7 +96,7 @@ class UserServiceTest {
 	final void userService_getUsers_ReturnListOfUserResponses() {
 		List<User> users = List.of(user, user2);
 		List<UserResponse> expectedUserResponses = List.of(userResponse, userResponse2);
-		when(authorizationService.isAdmin(token, "/users", "GET")).thenReturn(Boolean.TRUE);
+		when(authorizationService.isAdmin(token, "users", "GET")).thenReturn(Boolean.TRUE);
 		when(userRepository.findAll()).thenReturn(users);
 		
 		List<UserResponse> actualUserResponses = userService.getUsers(token);
@@ -117,7 +117,7 @@ class UserServiceTest {
 	@Test
 	final void userService_updateUser_ReturnUserResponse() {
 		id = 2L;
-		when(authorizationService.isAdmin(token, "/users", "PUT")).thenReturn(Boolean.TRUE);
+		when(authorizationService.isAdmin(token, "users", "PUT")).thenReturn(Boolean.TRUE);
 		when(userRepository.findById(id)).thenReturn(Optional.of(user2));
 		when(userRepository.save(user)).thenReturn(user);
 		when(passwordEncoder.encode(userRequest.getPassword())).thenReturn(user.getPassword());
@@ -128,7 +128,7 @@ class UserServiceTest {
 
 	@Test
 	final void userService_deleteUser_ReturnApiResponse() {
-		when(authorizationService.isAdmin(token, "/users", "DELETE")).thenReturn(Boolean.TRUE);
+		when(authorizationService.isAdmin(token, "users", "DELETE")).thenReturn(Boolean.TRUE);
 		when(userRepository.findById(id)).thenReturn(Optional.of(user));
 		doNothing().when(userRepository).delete(user);
 		

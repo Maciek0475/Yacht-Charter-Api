@@ -2,6 +2,7 @@ package com.mac2work.pricing.controller;
 
 import java.time.LocalDate;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,7 @@ public class PricingController {
 	private final PricingService pricingService;
 	
 	@GetMapping("/{priceFrom}/{from}/{to}")
-	public PricingResponse getCalculatedPrice(@PathVariable Double priceFrom, @PathVariable LocalDate from, @PathVariable LocalDate to){
+	public PricingResponse getCalculatedPrice(@PathVariable Double priceFrom, @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate from, @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate to){
 		
 		PricingResponse pricingResponse = pricingService.calculatePrice(priceFrom, from, to);
 		return pricingResponse;
