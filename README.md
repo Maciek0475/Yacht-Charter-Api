@@ -31,7 +31,7 @@ If you want to easily run this application, you must first have docker on your m
 
 Only one command is required to start Yacht-Charter-Api:
 
-```
+```console
 docker compose up
 ```
 
@@ -39,7 +39,7 @@ docker compose up
 
 If you want to stop application you should use command below:
 
-```
+```console
 docker compose down
 ```
 
