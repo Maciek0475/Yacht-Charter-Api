@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.mac2work.userpanel.repository.UserRepository;
 
@@ -29,7 +30,7 @@ public class ApplicationConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http
-				.authorizeHttpRequests(request -> request.requestMatchers("/user/**").permitAll())
+				.authorizeHttpRequests(request -> request.requestMatchers(AntPathRequestMatcher.antMatcher("/user/**")).permitAll())
 				.csrf(csrf -> csrf.disable())
 				.build();
 				

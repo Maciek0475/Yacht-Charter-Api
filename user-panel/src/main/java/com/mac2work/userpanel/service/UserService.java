@@ -33,7 +33,7 @@ public class UserService {
 	}
 
 	public List<UserResponse> getUsers(String token) {
-		authorizationService.isAdmin(token, "/users", "GET");
+		authorizationService.isAdmin(token, "users", "GET");
 		return userRepository.findAll().stream()
 				.map( user -> mapToUserResponse(user)).toList();
 	}
@@ -45,7 +45,7 @@ public class UserService {
 	}
 
 	public UserResponse updateUser(String token, Long id, UserRequest userRequest) {
-		authorizationService.isAdmin(token, "/users", "PUT");
+		authorizationService.isAdmin(token, "users", "PUT");
 		User user = userRepository.findById(id).orElseThrow( () -> new UserNotFoundException("id", id));
 		user.setFirstName(userRequest.getFirstName());
 		user.setLastName(userRequest.getLastName());
@@ -58,14 +58,14 @@ public class UserService {
 	}
 
 	public ApiResponse deleteUser(String token, Long id) {
-		authorizationService.isAdmin(token, "/users", "DELETE");
+		authorizationService.isAdmin(token, "users", "DELETE");
 		User user = userRepository.findById(id).orElseThrow( () -> new UserNotFoundException("id", id));
 		userRepository.delete(user);
 
 		return ApiResponse.builder()
 				.isSuccess(Boolean.TRUE)
 				.message("User successfully deleted")
-				.httpStatus(HttpStatus.NO_CONTENT)
+				.httpStatus(HttpStatus.OK)
 				.build();
 	}
 

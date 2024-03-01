@@ -30,6 +30,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mac2work.search.model.Accessory;
 import com.mac2work.search.model.Propulsion;
 import com.mac2work.search.request.YachtRequest;
+import com.mac2work.search.response.AccessoryResponse;
 import com.mac2work.search.response.ApiResponse;
 import com.mac2work.search.response.PriceResponse;
 import com.mac2work.search.response.YachtResponse;
@@ -51,6 +52,8 @@ class SearchControllerTest {
 	private YachtRequest yachtRequest;
 	private YachtResponse yachtResponse;
 	private YachtResponse yachtResponse2;
+	private AccessoryResponse accessoryResponse;
+	private AccessoryResponse accessoryResponse2;
 	private Accessory accessory;
 	private Accessory accessory2;
 	private PriceResponse priceResponse;
@@ -62,13 +65,20 @@ class SearchControllerTest {
 	void setUp() throws Exception {
 		id = 1L;
 
+		accessoryResponse = AccessoryResponse.builder()
+				.name("tent")
+				.build();
+		accessoryResponse2 = AccessoryResponse.builder()
+				.name("sink")
+				.build();
 		accessory = Accessory.builder()
+				.id(1L)
 				.name("tent")
 				.build();
 		accessory2 = Accessory.builder()
+				.id(2L)
 				.name("sink")
 				.build();
-		
 		yachtRequest = YachtRequest.builder()
 				.model("Sasanka")
 				.propulsion(Propulsion.SAILING)
@@ -85,7 +95,7 @@ class SearchControllerTest {
 				.capacity(5)
 				.motorPower(8.0)
 				.priceFrom(150.0)
-				.accessories(List.of(accessory, accessory2))
+				.accessories(List.of(accessoryResponse, accessoryResponse2))
 				.build();
 		yachtResponse2 = YachtResponse
 				.builder()
@@ -95,7 +105,7 @@ class SearchControllerTest {
 				.capacity(5)
 				.motorPower(5.0)
 				.priceFrom(130.0)
-				.accessories(List.of(accessory, accessory2))
+				.accessories(List.of(accessoryResponse, accessoryResponse2))
 				.build();
 		priceResponse = PriceResponse.builder()
 				.yachtModel("Sasanka")
@@ -105,7 +115,7 @@ class SearchControllerTest {
 		apiResponse = ApiResponse.builder()
 				.isSuccess(Boolean.TRUE)
 				.message("Yacht deleted successfully")
-				.httpStatus(HttpStatus.NO_CONTENT)
+				.httpStatus(HttpStatus.OK)
 				.build();
 	}
 
@@ -245,7 +255,7 @@ class SearchControllerTest {
 		ResultActions response = mockMvc.perform(delete("/search/"+id)
 				.contentType(MediaType.APPLICATION_JSON));
 		
-		response.andExpect(status().isNoContent())
+		response.andExpect(status().isOk())
 				.andExpect(jsonPath("$.isSuccess", CoreMatchers.is(apiResponse.getIsSuccess())))
 				.andExpect(jsonPath("$.message", CoreMatchers.is(apiResponse.getMessage())))
 				.andExpect(jsonPath("$.httpStatus", CoreMatchers.is(apiResponse.getHttpStatus().name())));

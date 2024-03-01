@@ -22,7 +22,7 @@ public class AccessoryService {
 	private final AccessoryRepository accessoryRepository;
 	private final UserPanelProxy userPanelProxy;
 	
-	private AccessoryResponse mapToAccessoryResponse(Accessory accessory) {
+	public AccessoryResponse mapToAccessoryResponse(Accessory accessory) {
 		return AccessoryResponse.builder()
 				.name(accessory.getName()).build();
 	}
@@ -33,7 +33,7 @@ public class AccessoryService {
 	}
 	
 	public List<AccessoryResponse> getAccessories() {
-		userPanelProxy.isAdmin("search/accessory", "get");
+		userPanelProxy.isAdmin("accessory", "get");
 		List<Accessory> accessories = accessoryRepository.findAll();
 		
 		return accessories.stream().map(
@@ -41,14 +41,14 @@ public class AccessoryService {
 	}
 
 	public AccessoryResponse getAccessoryById(Long id) {
-		userPanelProxy.isAdmin("search/accessory/"+id, "get");
+		userPanelProxy.isAdmin("accessory", "get");
 		Accessory accessory = accessoryRepository.findById(id).orElseThrow( () -> new ResourceNotFoundException("Accessory", "id", id));
 		
 		return mapToAccessoryResponse(accessory);
 	}
 	
 	public AccessoryResponse addAccessory(AccessoryRequest accessoryRequest) {
-		userPanelProxy.isAdmin("search/accessory", "post");
+		userPanelProxy.isAdmin("accessory", "post");
 		Accessory accessory = mapToAccessory(accessoryRequest);
 		
 		accessory = accessoryRepository.save(accessory);
@@ -57,7 +57,7 @@ public class AccessoryService {
 	}
 	
 	public AccessoryResponse updateAccessory(AccessoryRequest accessoryRequest, Long id) {
-		userPanelProxy.isAdmin("search/accessory/"+id, "put");
+		userPanelProxy.isAdmin("accessory", "put");
 		Accessory accessory = accessoryRepository.findById(id).orElseThrow( () -> new ResourceNotFoundException("Accessory", "id", id));
 		accessory.setName(accessoryRequest.getName());
 		accessory = accessoryRepository.save(accessory);
@@ -66,7 +66,7 @@ public class AccessoryService {
 	}
 	
 	public ApiResponse deleteAccessory(Long id) {
-		userPanelProxy.isAdmin("search/accessory/"+id, "delete");
+		userPanelProxy.isAdmin("accessory", "delete");
 		Accessory accessory = accessoryRepository.findById(id).orElseThrow( () -> new ResourceNotFoundException("Accessory", "id", id));
 		
 		accessoryRepository.delete(accessory);

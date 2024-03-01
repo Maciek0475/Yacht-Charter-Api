@@ -19,12 +19,12 @@ public class AuthorizationController {
 	private final AuthorizationService authorizationService;
 	
 	@GetMapping("/is-admin/{path}/{mappingMethod}")
-	public boolean isAdmin(@RequestHeader (name="authorization") String token, @PathVariable String path, @PathVariable String mappingMethod) {
+	public boolean isAdmin(@RequestHeader (HttpHeaders.AUTHORIZATION) String token, @PathVariable String path, @PathVariable String mappingMethod) {
 		return authorizationService.isAdmin(token, path, mappingMethod);
 	}
 	
 	@GetMapping("/is-correct-user/{id}/{resource}")
-	public boolean isCorrectUser(@RequestHeader (name="authorization") String token, @PathVariable Long id, @PathVariable String resource) {
+	public boolean isCorrectUser(@RequestHeader (HttpHeaders.AUTHORIZATION) String token, @PathVariable Long id, @PathVariable String resource) {
 		return authorizationService.isCorrectUser(token, id ,resource);
 	}
 	

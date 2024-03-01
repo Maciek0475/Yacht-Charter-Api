@@ -24,6 +24,7 @@ import com.mac2work.search.proxy.PricingServiceProxy;
 import com.mac2work.search.proxy.UserPanelProxy;
 import com.mac2work.search.repository.YachtRepository;
 import com.mac2work.search.request.YachtRequest;
+import com.mac2work.search.response.AccessoryResponse;
 import com.mac2work.search.response.ApiResponse;
 import com.mac2work.search.response.PriceResponse;
 import com.mac2work.search.response.YachtResponse;
@@ -37,6 +38,8 @@ class SearchServiceTest {
 	private PricingServiceProxy pricingServiceProxy;
 	@Mock
 	private UserPanelProxy userPanelProxy;
+	@Mock
+	private AccessoryService accessoryService;
 	
 	@InjectMocks
 	private SearchService searchService;
@@ -48,7 +51,9 @@ class SearchServiceTest {
 	
 	private Accessory accessory;
 	private Accessory accessory2;
-	
+	private AccessoryResponse accessoryResponse;
+	private AccessoryResponse accessoryResponse2;
+
 	private PriceResponse priceResponse;
 	private ApiResponse apiResponse;
 	
@@ -59,9 +64,17 @@ class SearchServiceTest {
 		id = 1L;
 
 		accessory = Accessory.builder()
+				.id(1L)
 				.name("tent")
 				.build();
 		accessory2 = Accessory.builder()
+				.id(2L)
+				.name("sink")
+				.build();
+		accessoryResponse = AccessoryResponse.builder()
+				.name("tent")
+				.build();
+		accessoryResponse2 = AccessoryResponse.builder()
 				.name("sink")
 				.build();
 		yacht = Yacht.builder()
@@ -100,7 +113,7 @@ class SearchServiceTest {
 				.capacity(5)
 				.motorPower(8.0)
 				.priceFrom(150.0)
-				.accessories(List.of(accessory, accessory2))
+				.accessories(List.of(accessoryResponse, accessoryResponse2))
 				.build();
 		priceResponse = PriceResponse.builder()
 				.yachtModel("Sasanka")
@@ -110,13 +123,15 @@ class SearchServiceTest {
 		apiResponse = ApiResponse.builder()
 				.isSuccess(Boolean.TRUE)
 				.message("Yacht deleted successfully")
-				.httpStatus(HttpStatus.NO_CONTENT)
+				.httpStatus(HttpStatus.OK)
 				.build();
 	}
 
 	@Test
 	final void searchService_getYachts_ReturnMoreThanOneYachtResponse() {
 		when(yachtRepository.findAll()).thenReturn(List.of(yacht, yacht2));
+		when(accessoryService.mapToAccessoryResponse(accessory)).thenReturn(accessoryResponse);
+		when(accessoryService.mapToAccessoryResponse(accessory2)).thenReturn(accessoryResponse2);
 		
 		List<YachtResponse> yachtResponses = searchService.getYachts();
 		
@@ -126,6 +141,8 @@ class SearchServiceTest {
 	@Test
 	final void searchService_getMotorYachtsByPropulsion_ReturnMoreThanOneYachtResponse() {
 		when(yachtRepository.findAllByPropulsion(Propulsion.SAILING)).thenReturn(List.of(yacht, yacht2));
+		when(accessoryService.mapToAccessoryResponse(accessory)).thenReturn(accessoryResponse);
+		when(accessoryService.mapToAccessoryResponse(accessory2)).thenReturn(accessoryResponse2);
 		
 		List<YachtResponse> yachtResponses = searchService.getYachtsByPropulsion(Propulsion.SAILING);
 		
@@ -135,6 +152,8 @@ class SearchServiceTest {
 	@Test
 	final void searchService_getYachtById_ReturnYachtResponse() {
 		when(yachtRepository.findById(id)).thenReturn(Optional.of(yacht));
+		when(accessoryService.mapToAccessoryResponse(accessory)).thenReturn(accessoryResponse);
+		when(accessoryService.mapToAccessoryResponse(accessory2)).thenReturn(accessoryResponse2);
 		
 		YachtResponse yachtResponse = searchService.getYachtById(id);
 		
@@ -157,6 +176,8 @@ class SearchServiceTest {
 	final void searchService_addYacht_ReturnYachtResponse() {
 		when(userPanelProxy.isAdmin("search", "post")).thenReturn(true);
 		when(yachtRepository.save(any(Yacht.class))).thenReturn(yacht);
+		when(accessoryService.mapToAccessoryResponse(accessory)).thenReturn(accessoryResponse);
+		when(accessoryService.mapToAccessoryResponse(accessory2)).thenReturn(accessoryResponse2);
 		
 		YachtResponse yachtResponse = searchService.addYacht(yachtRequest);
 		
@@ -169,6 +190,8 @@ class SearchServiceTest {
 		when(userPanelProxy.isAdmin("search", "put")).thenReturn(true);
 		when(yachtRepository.findById(id)).thenReturn(Optional.of(yacht2));
 		when(yachtRepository.save(any(Yacht.class))).thenReturn(yacht);
+		when(accessoryService.mapToAccessoryResponse(accessory)).thenReturn(accessoryResponse);
+		when(accessoryService.mapToAccessoryResponse(accessory2)).thenReturn(accessoryResponse2);
 
 		YachtResponse yachtResponse = searchService.updateYacht(yachtRequest, id);
 		

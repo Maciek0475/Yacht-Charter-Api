@@ -85,7 +85,7 @@ class OrdersControllerTest {
 		apiResponse = ApiResponse.builder()
 				.isSuccess(Boolean.TRUE)
 				.message("Order deleted successfully")
-				.httpStatus(HttpStatus.NO_CONTENT)
+				.httpStatus(HttpStatus.OK)
 				.build();
 	}
 
@@ -184,7 +184,7 @@ class OrdersControllerTest {
 		ResultActions response = mockMvc.perform(delete("/orders/"+id)
 				.contentType(MediaType.APPLICATION_JSON));
 		
-		response.andExpect(status().isNoContent())
+		response.andExpect(status().isOk())
 				.andExpect(jsonPath("$.isSuccess", CoreMatchers.is(apiResponse.getIsSuccess())))
 				.andExpect(jsonPath("$.message", CoreMatchers.is(apiResponse.getMessage())))
 				.andExpect(jsonPath("$.httpStatus", CoreMatchers.is(apiResponse.getHttpStatus().name())));

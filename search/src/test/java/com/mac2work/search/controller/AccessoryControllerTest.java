@@ -67,7 +67,7 @@ class AccessoryControllerTest {
 		apiResponse = ApiResponse.builder()
 				.isSuccess(Boolean.TRUE)
 				.message("Accessory delted successfully")
-				.httpStatus(HttpStatus.NO_CONTENT)
+				.httpStatus(HttpStatus.OK)
 				.build();
 	}
 
@@ -76,7 +76,7 @@ class AccessoryControllerTest {
 		List<AccessoryResponse> accessoryResponses = List.of(accessoryResponse, accessoryResponse2);
 		when(accessoryService.getAccessories()).thenReturn(accessoryResponses);
 		
-		ResultActions response = mockMvc.perform(get("/search/accessory/")
+		ResultActions response = mockMvc.perform(get("/search/accessory")
 				.contentType(MediaType.APPLICATION_JSON));
 		
 		response.andExpect(status().isOk())
@@ -98,7 +98,7 @@ class AccessoryControllerTest {
 	final void accessoryController_addAccessory_ReturnAccessoryResponse() throws Exception {
 		when(accessoryService.addAccessory(accessoryRequest)).thenReturn(accessoryResponse);
 		
-		ResultActions response = mockMvc.perform(post("/search/accessory/")
+		ResultActions response = mockMvc.perform(post("/search/accessory")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(accessoryRequest)));
 		
@@ -126,7 +126,7 @@ class AccessoryControllerTest {
 		ResultActions response = mockMvc.perform(delete("/search/accessory/"+id)
 				.contentType(MediaType.APPLICATION_JSON));
 		
-		response.andExpect(status().isNoContent())
+		response.andExpect(status().isOk())
 				.andExpect(jsonPath("$.isSuccess", CoreMatchers.is(apiResponse.getIsSuccess())))
 				.andExpect(jsonPath("$.message", CoreMatchers.is(apiResponse.getMessage())))
 				.andExpect(jsonPath("$.httpStatus", CoreMatchers.is(apiResponse.getHttpStatus().name())));
