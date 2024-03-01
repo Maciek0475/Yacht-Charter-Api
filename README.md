@@ -84,7 +84,7 @@ Check out list of application endpoints.
 
 | Method | Url | Decription | Required privileges | Example of request body | 
 | ------ | --- | ---------- | ------------------- | ----------------------- |
-| GET    | /pricing/{priceFrom}/{from}/{to} | Get specific thread messages | USER | N/A |
+| GET    | /pricing/{priceFrom}/{from}/{to} | Get yacht price | USER | N/A |
 
 ### Orders
 
@@ -183,7 +183,7 @@ Check out list of application endpoints.
 	"days": 10,
 	"dateFrom": "2024-04-15",
 	"dateTo": "2024-04-25",
-	"price": 1722.5
+	"price": 1987.5
 }
 ```
 
